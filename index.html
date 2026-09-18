@@ -1,1863 +1,1258 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Japanese Study Notebook</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
-        rel="stylesheet">
-    <style>
-        :root {
-            --paper: #faf6ee;
-            --paper-raised: #ffffff;
-            --ink: #2a251f;
-            --ink-soft: #6b6152;
-            --line: #ded4bd;
-            --hanko: #b23a2f;
-            --hanko-soft: #f1ded9;
-            --pine: #2f4b3c;
-            --pine-soft: #e2ebe4;
-            --gold: #b5883a;
-            --focus: #1a5fb4;
-        }
-
-        :root:not([data-theme="light"]) {
-            @media (prefers-color-scheme: dark) {
-                --paper: #1c1a16;
-                --paper-raised: #262319;
-                --ink: #efe9dd;
-                --ink-soft: #b3a892;
-                --line: #453f32;
-                --hanko: #e0685a;
-                --hanko-soft: #3a2420;
-                --pine: #7fae95;
-                --pine-soft: #223129;
-                --gold: #d9ac5c;
-            }
-        }
-
-        :root[data-theme="dark"] {
-            --paper: #1c1a16;
-            --paper-raised: #262319;
-            --ink: #efe9dd;
-            --ink-soft: #b3a892;
-            --line: #453f32;
-            --hanko: #e0685a;
-            --hanko-soft: #3a2420;
-            --pine: #7fae95;
-            --pine-soft: #223129;
-            --gold: #d9ac5c;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background: var(--paper);
-            color: var(--ink);
-            font-family: "Noto Sans JP", "Noto Sans", sans-serif;
-            line-height: 1.7;
-            min-height: 100vh;
-        }
-
-        ::selection {
-            background: var(--hanko-soft);
-        }
-
-        a {
-            color: var(--pine);
-        }
-
-        .frame {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .sidebar {
-            width: 230px;
-            flex-shrink: 0;
-            background: var(--paper-raised);
-            border-right: 1px solid var(--line);
-            padding: 28px 0;
-            position: sticky;
-            top: 0;
-            align-self: flex-start;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .brand {
-            padding: 0 22px 22px 22px;
-            border-bottom: 1px solid var(--line);
-            margin-bottom: 10px;
-        }
-
-        .brand h1 {
-            font-family: "Noto Serif JP", serif;
-            font-size: 1.3rem;
-            margin: 0 0 4px 0;
-            font-weight: 700;
-        }
-
-        .brand p {
-            margin: 0;
-            font-size: 0.8rem;
-            color: var(--ink-soft);
-        }
-
-        .tab-group-label {
-            font-size: 0.72rem;
-            color: var(--ink-soft);
-            padding: 14px 22px 6px 22px;
-        }
-
-        .tab {
-            display: flex;
-            align-items: baseline;
-            gap: 10px;
-            width: 100%;
-            text-align: left;
-            background: none;
-            border: none;
-            padding: 9px 22px;
-            font-family: inherit;
-            font-size: 0.92rem;
-            color: var(--ink);
-            cursor: pointer;
-            border-left: 3px solid transparent;
-        }
-
-        .tab .lvl {
-            font-family: "Noto Serif JP", serif;
-            font-weight: 700;
-            color: var(--ink-soft);
-            min-width: 34px;
-        }
-
-        .tab:hover {
-            background: var(--pine-soft);
-        }
-
-        .tab[aria-selected="true"] {
-            border-left: 3px solid var(--hanko);
-            background: var(--hanko-soft);
-        }
-
-        .tab[aria-selected="true"] .lvl {
-            color: var(--hanko);
-        }
-
-        main {
-            flex: 1;
-            min-width: 0;
-            padding: 40px clamp(20px, 5vw, 64px) 80px;
-            max-width: 880px;
-        }
-
-        .level-head {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 16px;
-            border-bottom: 2px solid var(--ink);
-            padding-bottom: 14px;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-        }
-
-        .level-head h2 {
-            font-family: "Noto Serif JP", serif;
-            font-size: 2rem;
-            margin: 0;
-        }
-
-        .level-head .sub {
-            color: var(--ink-soft);
-            font-size: 0.9rem;
-            max-width: 46ch;
-        }
-
-        .stamp {
-            font-family: "Noto Serif JP", serif;
-            font-weight: 700;
-            font-size: 0.78rem;
-            color: var(--hanko);
-            border: 2px solid var(--hanko);
-            border-radius: 50%;
-            width: 56px;
-            height: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            transform: rotate(-8deg);
-            flex-shrink: 0;
-            line-height: 1.15;
-        }
-
-        section.block {
-            margin-bottom: 40px;
-        }
-
-        section.block h3 {
-            font-family: "Noto Serif JP", serif;
-            font-size: 1.15rem;
-            border-bottom: 1px solid var(--line);
-            padding-bottom: 8px;
-            margin-bottom: 16px;
-        }
-
-        .note {
-            background: var(--pine-soft);
-            border-left: 3px solid var(--pine);
-            padding: 12px 16px;
-            font-size: 0.88rem;
-            color: var(--ink);
-            margin-bottom: 28px;
-        }
-
-        .grammar-item {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 6px;
-            padding: 14px 0;
-            border-bottom: 1px dashed var(--line);
-        }
-
-        .grammar-item:last-child {
-            border-bottom: none;
-        }
-
-        .grammar-pattern {
-            font-family: "Noto Serif JP", serif;
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: var(--pine);
-        }
-
-        .grammar-example {
-            font-size: 0.98rem;
-        }
-
-        .grammar-en {
-            color: var(--ink-soft);
-            font-size: 0.88rem;
-            font-style: italic;
-        }
-
-        .vocab-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            gap: 10px;
-        }
-
-        .vocab-card {
-            background: var(--paper-raised);
-            border: 1px solid var(--line);
-            border-radius: 4px;
-            padding: 11px 13px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .vocab-card .jp {
-            font-size: 1.05rem;
-        }
-
-        .vocab-card .reading {
-            color: var(--ink-soft);
-            font-size: 0.78rem;
-            display: block;
-        }
-
-        .vocab-card .en {
-            color: var(--ink-soft);
-            font-size: 0.85rem;
-            text-align: right;
-        }
-
-        .vocab-card label {
-            display: flex;
-            align-items: center;
-            margin-right: 2px;
-        }
-
-        .vocab-card input[type=checkbox] {
-            accent-color: var(--hanko);
-        }
-
-        .qcard {
-            background: var(--paper-raised);
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            padding: 18px 20px;
-            margin-bottom: 16px;
-        }
-
-        .qcard .qnum {
-            font-family: "Noto Serif JP", serif;
-            font-weight: 700;
-            color: var(--gold);
-            font-size: 0.8rem;
-            letter-spacing: 0.02em;
-        }
-
-        .qcard .qtext {
-            font-size: 1.05rem;
-            margin: 6px 0 12px 0;
-        }
-
-        .qcard .qinstruction {
-            color: var(--ink-soft);
-            font-size: 0.85rem;
-            font-style: italic;
-            margin-bottom: 10px;
-        }
-
-        .qcard .choices {
-            display: grid;
-            gap: 6px;
-            margin-bottom: 10px;
-        }
-
-        .qcard .choice {
-            font-size: 0.95rem;
-            color: var(--ink-soft);
-        }
-
-        .reveal-btn {
-            background: var(--pine);
-            color: var(--paper);
-            border: none;
-            padding: 7px 14px;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .reveal-btn:focus-visible,
-        .tab:focus-visible,
-        input:focus-visible,
-        select:focus-visible,
-        textarea:focus-visible {
-            outline: 2px solid var(--focus);
-            outline-offset: 2px;
-        }
-
-        .answer {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px dashed var(--line);
-            display: none;
-        }
-
-        .answer.shown {
-            display: block;
-        }
-
-        .answer .correct {
-            color: var(--pine);
-            font-weight: 700;
-        }
-
-        .answer .meaning {
-            color: var(--ink-soft);
-            font-size: 0.9rem;
-            margin-top: 4px;
-        }
-
-        .panel {
-            display: none;
-        }
-
-        .panel.active {
-            display: block;
-        }
-
-        .link-grid {
-            display: grid;
-            gap: 14px;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        }
-
-        .link-card {
-            display: block;
-            background: var(--paper-raised);
-            border: 1px solid var(--line);
-            border-left: 3px solid var(--pine);
-            border-radius: 6px;
-            padding: 16px 18px;
-            text-decoration: none;
-            color: var(--ink);
-        }
-
-        .link-card:hover {
-            border-left-color: var(--hanko);
-        }
-
-        .link-lvl {
-            font-size: 0.72rem;
-            color: var(--gold);
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .link-title {
-            font-family: "Noto Serif JP", serif;
-            font-weight: 700;
-            font-size: 1.05rem;
-            margin-bottom: 6px;
-        }
-
-        .link-desc {
-            font-size: 0.88rem;
-            color: var(--ink-soft);
-            margin-bottom: 8px;
-        }
-
-        .link-url {
-            font-size: 0.82rem;
-            color: var(--pine);
-        }
-
-        .progress-row {
-            display: grid;
-            grid-template-columns: 110px 1fr 70px;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 0;
-            border-bottom: 1px dashed var(--line);
-        }
-
-        .progress-row:last-child {
-            border-bottom: none;
-        }
-
-        .progress-label {
-            font-family: "Noto Serif JP", serif;
-            font-weight: 700;
-            color: var(--pine);
-        }
-
-        .progress-track {
-            background: var(--pine-soft);
-            border-radius: 999px;
-            height: 10px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: var(--hanko);
-            height: 100%;
-            border-radius: 999px;
-            transition: width 0.3s ease;
-        }
-
-        .progress-count {
-            font-size: 0.85rem;
-            color: var(--ink-soft);
-            text-align: right;
-        }
-
-        .progress-total {
-            background: var(--paper-raised);
-            border: 1px solid var(--line);
-            border-radius: 6px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .progress-total .big {
-            font-family: "Noto Serif JP", serif;
-            font-size: 1.8rem;
-            color: var(--hanko);
-            font-weight: 700;
-        }
-
-        .progress-reset {
-            background: none;
-            border: 1px solid var(--line);
-            color: var(--ink-soft);
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 0.82rem;
-            cursor: pointer;
-        }
-
-        .progress-reset:hover {
-            border-color: var(--hanko);
-            color: var(--hanko);
-        }
-
-        @media (max-width: 760px) {
-            .frame {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                overflow-x: auto;
-                display: flex;
-                padding: 14px 0;
-                white-space: nowrap;
-            }
-
-            .brand {
-                display: none;
-            }
-
-            .tab-group-label {
-                display: none;
-            }
-
-            .tab {
-                padding: 8px 14px;
-                border-left: none;
-                border-bottom: 3px solid transparent;
-            }
-
-            .tab[aria-selected="true"] {
-                border-left: none;
-                border-bottom: 3px solid var(--hanko);
-            }
-
-            main {
-                padding: 24px 18px 60px;
-            }
-
-            .vocab-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 420px) {
-            .vocab-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japanese Study Notebook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #faf6ee;
+    --paper-raised: #ffffff;
+    --ink: #2a251f;
+    --ink-soft: #6b6152;
+    --line: #ded4bd;
+    --hanko: #b23a2f;
+    --hanko-soft: #f1ded9;
+    --pine: #2f4b3c;
+    --pine-soft: #e2ebe4;
+    --gold: #b5883a;
+    --focus: #1a5fb4;
+  }
+  :root:not([data-theme="light"]){
+    @media (prefers-color-scheme: dark){
+      --paper: #1c1a16;
+      --paper-raised: #262319;
+      --ink: #efe9dd;
+      --ink-soft: #b3a892;
+      --line: #453f32;
+      --hanko: #e0685a;
+      --hanko-soft: #3a2420;
+      --pine: #7fae95;
+      --pine-soft: #223129;
+      --gold: #d9ac5c;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #1c1a16;
+    --paper-raised: #262319;
+    --ink: #efe9dd;
+    --ink-soft: #b3a892;
+    --line: #453f32;
+    --hanko: #e0685a;
+    --hanko-soft: #3a2420;
+    --pine: #7fae95;
+    --pine-soft: #223129;
+    --gold: #d9ac5c;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans JP", "Noto Sans", sans-serif;
+    line-height:1.7;
+    min-height:100vh;
+  }
+  ::selection{ background:var(--hanko-soft); }
+  a{ color: var(--pine); }
+  .frame{ display:flex; min-height:100vh; }
+
+  .sidebar{
+    width:230px;
+    flex-shrink:0;
+    background:var(--paper-raised);
+    border-right:1px solid var(--line);
+    padding:28px 0;
+    position:sticky;
+    top:0;
+    align-self:flex-start;
+    height:100vh;
+    overflow-y:auto;
+  }
+  .brand{ padding:0 22px 22px 22px; border-bottom:1px solid var(--line); margin-bottom:10px; }
+  .brand h1{ font-family:"Noto Serif JP", serif; font-size:1.3rem; margin:0 0 4px 0; font-weight:700; }
+  .brand p{ margin:0; font-size:0.8rem; color:var(--ink-soft); }
+  .mobile-brand{ display:none; }
+  .tab-group-label{ font-size:0.72rem; color:var(--ink-soft); padding:14px 22px 6px 22px; }
+  .tab{
+    display:flex; align-items:baseline; gap:10px; width:100%; text-align:left;
+    background:none; border:none; padding:9px 22px; font-family:inherit;
+    font-size:0.92rem; color:var(--ink); cursor:pointer; border-left:3px solid transparent;
+  }
+  .tab .lvl{ font-family:"Noto Serif JP", serif; font-weight:700; color:var(--ink-soft); min-width:34px; }
+  .tab:hover{ background:var(--pine-soft); }
+  .tab[aria-selected="true"]{ border-left:3px solid var(--hanko); background:var(--hanko-soft); }
+  .tab[aria-selected="true"] .lvl{ color:var(--hanko); }
+
+  main{ flex:1; min-width:0; padding:40px clamp(20px, 5vw, 64px) 80px; max-width:880px; }
+  .level-head{
+    display:flex; align-items:flex-end; justify-content:space-between; gap:16px;
+    border-bottom:2px solid var(--ink); padding-bottom:14px; margin-bottom:28px; flex-wrap:wrap;
+  }
+  .level-head h2{ font-family:"Noto Serif JP", serif; font-size:2rem; margin:0; }
+  .level-head .sub{ color:var(--ink-soft); font-size:0.9rem; max-width:46ch; }
+  .stamp{
+    font-family:"Noto Serif JP", serif; font-weight:700; font-size:0.78rem; color:var(--hanko);
+    border:2px solid var(--hanko); border-radius:50%; width:56px; height:56px;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    transform:rotate(-8deg); flex-shrink:0; line-height:1.15;
+  }
+
+  section.block{ margin-bottom:40px; }
+  section.block h3{
+    font-family:"Noto Serif JP", serif; font-size:1.15rem; border-bottom:1px solid var(--line);
+    padding-bottom:8px; margin-bottom:16px;
+  }
+
+  .note{
+    background:var(--pine-soft); border-left:3px solid var(--pine); padding:12px 16px;
+    font-size:0.88rem; color:var(--ink); margin-bottom:28px;
+  }
+
+  .grammar-item{ display:grid; grid-template-columns:1fr; gap:6px; padding:14px 0; border-bottom:1px dashed var(--line); }
+  .grammar-item:last-child{ border-bottom:none; }
+  .grammar-pattern{ font-family:"Noto Serif JP", serif; font-weight:700; font-size:1.05rem; color:var(--pine); }
+  .grammar-example{ font-size:0.98rem; }
+  .grammar-en{ color:var(--ink-soft); font-size:0.88rem; font-style:italic; }
+
+  .vocab-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(230px,1fr)); gap:10px; }
+  .vocab-card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:4px; padding:11px 13px;
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+  }
+  .vocab-card .jp{ font-size:1.05rem; }
+  .vocab-card .reading{ color:var(--ink-soft); font-size:0.78rem; display:block; }
+  .vocab-card .en{ color:var(--ink-soft); font-size:0.85rem; text-align:right; }
+  .vocab-card label{ display:flex; align-items:center; margin-right:2px; }
+  .vocab-card input[type=checkbox]{ accent-color: var(--hanko); }
+
+  .qcard{ background:var(--paper-raised); border:1px solid var(--line); border-radius:6px; padding:18px 20px; margin-bottom:16px; }
+  .qcard .qnum{ font-family:"Noto Serif JP", serif; font-weight:700; color:var(--gold); font-size:0.8rem; letter-spacing:0.02em; }
+  .qcard .qtext{ font-size:1.05rem; margin:6px 0 12px 0; }
+  .qcard .qinstruction{ color:var(--ink-soft); font-size:0.85rem; font-style:italic; margin-bottom:10px; }
+  .qcard .choices{ display:grid; gap:6px; margin-bottom:10px; }
+  .qcard .choice{ font-size:0.95rem; color:var(--ink-soft); }
+  .reveal-btn{ background:var(--pine); color:var(--paper); border:none; padding:7px 14px; border-radius:4px; font-family:inherit; font-size:0.85rem; cursor:pointer; }
+  .reveal-btn:focus-visible, .tab:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{
+    outline:2px solid var(--focus); outline-offset:2px;
+  }
+  .answer{ margin-top:12px; padding-top:12px; border-top:1px dashed var(--line); display:none; }
+  .answer.shown{ display:block; }
+  .answer .correct{ color:var(--pine); font-weight:700; }
+  .answer .meaning{ color:var(--ink-soft); font-size:0.9rem; margin-top:4px; }
+
+  .panel{ display:none; }
+  .panel.active{ display:block; }
+
+  .link-grid{ display:grid; gap:14px; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); }
+  .link-card{
+    display:block; background:var(--paper-raised); border:1px solid var(--line); border-left:3px solid var(--pine);
+    border-radius:6px; padding:16px 18px; text-decoration:none; color:var(--ink);
+  }
+  .link-card:hover{ border-left-color:var(--hanko); }
+  .link-lvl{ font-size:0.72rem; color:var(--gold); font-weight:700; margin-bottom:4px; }
+  .link-title{ font-family:"Noto Serif JP", serif; font-weight:700; font-size:1.05rem; margin-bottom:6px; }
+  .link-desc{ font-size:0.88rem; color:var(--ink-soft); margin-bottom:8px; }
+  .link-url{ font-size:0.82rem; color:var(--pine); }
+
+  .progress-row{
+    display:grid;
+    grid-template-columns:110px 1fr 70px;
+    align-items:center;
+    gap:14px;
+    padding:12px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .progress-row:last-child{ border-bottom:none; }
+  .progress-label{ font-family:"Noto Serif JP", serif; font-weight:700; color:var(--pine); }
+  .progress-track{
+    background:var(--pine-soft);
+    border-radius:999px;
+    height:10px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    background:var(--hanko);
+    height:100%;
+    border-radius:999px;
+    transition:width 0.3s ease;
+  }
+  .progress-count{ font-size:0.85rem; color:var(--ink-soft); text-align:right; }
+  .progress-total{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:16px 20px;
+    margin-bottom:24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .progress-total .big{
+    font-family:"Noto Serif JP", serif;
+    font-size:1.8rem;
+    color:var(--hanko);
+    font-weight:700;
+  }
+  .progress-reset{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    padding:6px 12px;
+    border-radius:4px;
+    font-family:inherit;
+    font-size:0.82rem;
+    cursor:pointer;
+  }
+  .progress-reset:hover{ border-color:var(--hanko); color:var(--hanko); }
+
+  @media (max-width: 760px){
+    .frame{ flex-direction:column; }
+    .sidebar{ width:100%; height:auto; position:relative; overflow-x:auto; display:flex; padding:14px 0; white-space:nowrap; }
+    .brand{ display:none; }
+    .mobile-brand{
+      display:block;
+      width:100%;
+      padding:14px 18px 6px 18px;
+      text-align:center;
+      background:var(--paper-raised);
+      border-bottom:1px solid var(--line);
+    }
+    .mobile-brand h1{ font-family:"Noto Serif JP", serif; font-size:1.15rem; margin:0 0 2px 0; font-weight:700; }
+    .mobile-brand p{ margin:0; font-size:0.78rem; color:var(--ink-soft); }
+    .tab-group-label{ display:none; }
+    .tab{ padding:8px 14px; border-left:none; border-bottom:3px solid transparent; }
+    .tab[aria-selected="true"]{ border-left:none; border-bottom:3px solid var(--hanko); }
+    main{ padding:24px 18px 60px; }
+    .vocab-grid{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width: 420px){ .vocab-grid{ grid-template-columns:1fr; } }
+</style>
 </head>
-
 <body>
 
-    <div class="frame">
-        <nav class="sidebar" id="sidebar">
-            <div class="brand">
-                <h1>Japanese Study Notebook</h1>
-                <p>N5 to N1, JFT-Basic, and SSW Kaigo</p>
-            </div>
-
-            <div class="tab-group-label">JLPT LEVELS</div>
-            <button class="tab" data-panel="n5" aria-selected="true"><span class="lvl">N5</span> First steps</button>
-            <button class="tab" data-panel="n4"><span class="lvl">N4</span> Building basics</button>
-            <button class="tab" data-panel="n3"><span class="lvl">N3</span> Everyday conversation</button>
-            <button class="tab" data-panel="n2"><span class="lvl">N2</span> Working level</button>
-            <button class="tab" data-panel="n1"><span class="lvl">N1</span> Advanced</button>
-
-            <div class="tab-group-label">WORK &amp; SPECIALIZED EXAMS</div>
-            <button class="tab" data-panel="jft"><span class="lvl">JFT</span> Basic Test</button>
-            <button class="tab" data-panel="kaigo"><span class="lvl">介護</span> SSW Kaigo Exam</button>
-
-            <div class="tab-group-label">MATERIALS &amp; SUPPORT</div>
-            <button class="tab" data-panel="materials"><span class="lvl">📘</span> Free Materials</button>
-            <button class="tab" data-panel="ask"><span class="lvl">🤖</span> Ask AI</button>
-            <button class="tab" data-panel="progress"><span class="lvl">📊</span> Your Progress</button>
-        </nav>
-
-        <main>
-
-            <!-- N5 -->
-            <section class="panel active" id="panel-n5">
-                <div class="level-head">
-                    <div>
-                        <h2>N5</h2>
-                        <p class="sub">Hiragana, katakana, and the most basic sentence patterns — self-introductions and
-                            everyday greetings.</p>
-                    </div>
-                    <div class="stamp">First<br>Steps</div>
-                </div>
-
-                <section class="block">
-                    <h3>Learn More (Free)</h3>
-                    <div class="link-grid">
-                        <a class="link-card" href="https://www.irodori.jpf.go.jp/starter/pdf.html" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Textbook</div>
-                            <div class="link-title">Irodori — Starter (入門)</div>
-                            <div class="link-desc">Free official coursebook matching N5/A1 level.</div>
-                        </a>
-                        <a class="link-card" href="https://jlptsensei.com/jlpt-n5-grammar-list/" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Grammar list</div>
-                            <div class="link-title">JLPT Sensei — N5 Grammar</div>
-                            <div class="link-desc">Full free grammar list with example sentences.</div>
-                        </a>
-                        <a class="link-card" href="https://bunpro.jp/grammar_points?levels%5B%5D=5" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Practice</div>
-                            <div class="link-title">Bunpro — N5 Grammar</div>
-                            <div class="link-desc">Grammar reference with example sentences and quiz.</div>
-                        </a>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Grammar Points</h3>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜は〜です</div>
-                        <div class="grammar-example">これは 本 です。</div>
-                        <div class="grammar-en">This is a book.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜があります／います</div>
-                        <div class="grammar-example">机の上に 猫が います。</div>
-                        <div class="grammar-en">There is a cat on the desk.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">Verb ます form</div>
-                        <div class="grammar-example">毎日 日本語を 勉強します。</div>
-                        <div class="grammar-en">I study Japanese every day.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜たいです</div>
-                        <div class="grammar-example">大阪に 帰りたいです。</div>
-                        <div class="grammar-en">I want to go back to Osaka.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜ませんか</div>
-                        <div class="grammar-example">一緒に ジムへ 行きませんか。</div>
-                        <div class="grammar-en">Would you like to go to the gym together?</div>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Vocabulary</h3>
-                    <div class="vocab-grid" data-vocab="n5"></div>
-                </section>
-
-                <section class="block">
-                    <h3>Practice Questions</h3>
-                    <div class="qcard">
-                        <div class="qnum">Question 1</div>
-                        <div class="qtext">「わたし＿がくせいです。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. を</div>
-                            <div class="choice">B. は</div>
-                            <div class="choice">C. に</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: B (は)</div>
-                            <div class="meaning">"I am a student." — は marks the topic of the sentence.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 2</div>
-                        <div class="qtext">「あした ともだち＿ あいます。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. と</div>
-                            <div class="choice">B. の</div>
-                            <div class="choice">C. も</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (と)</div>
-                            <div class="meaning">"I will meet my friend tomorrow." — と marks who you do something
-                                together with.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 3</div>
-                        <div class="qtext">「テーブルの 上に ペンが ＿。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. います</div>
-                            <div class="choice">B. あります</div>
-                            <div class="choice">C. します</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: B (あります)</div>
-                            <div class="meaning">"There is a pen on the table." — あります is used for non-living things;
-                                います is for people/animals.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 4</div>
-                        <div class="qtext">「わたしは にほんごを べんきょうし＿です。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. たい</div>
-                            <div class="choice">B. ます</div>
-                            <div class="choice">C. ません</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (たい)</div>
-                            <div class="meaning">"I want to study Japanese." — verb stem + たい expresses "want to do."
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- N4 -->
-            <section class="panel" id="panel-n4">
-                <div class="level-head">
-                    <div>
-                        <h2>N4</h2>
-                        <p class="sub">Extended て-form usage, the potential form, and simple reason/condition
-                            expressions.</p>
-                    </div>
-                    <div class="stamp">Building<br>Basics</div>
-                </div>
-
-                <section class="block">
-                    <h3>Learn More (Free)</h3>
-                    <div class="link-grid">
-                        <a class="link-card" href="https://www.irodori.jpf.go.jp/elementary01/pdf.html" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Textbook</div>
-                            <div class="link-title">Irodori — Elementary 1/2 (初級1／2)</div>
-                            <div class="link-desc">Free official coursebook covering N4/A2 material.</div>
-                        </a>
-                        <a class="link-card" href="https://jlptsensei.com/jlpt-n4-grammar-list/" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Grammar list</div>
-                            <div class="link-title">JLPT Sensei — N4 Grammar</div>
-                            <div class="link-desc">Full free grammar list with example sentences.</div>
-                        </a>
-                        <a class="link-card" href="https://bunpro.jp/grammar_points?levels%5B%5D=4" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Practice</div>
-                            <div class="link-title">Bunpro — N4 Grammar</div>
-                            <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
-                        </a>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Grammar Points</h3>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜てもいいです</div>
-                        <div class="grammar-example">ここに 座っても いいですか。</div>
-                        <div class="grammar-en">May I sit here?</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜てはいけません</div>
-                        <div class="grammar-example">ここで タバコを 吸っては いけません。</div>
-                        <div class="grammar-en">You must not smoke here.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜ながら</div>
-                        <div class="grammar-example">音楽を 聞きながら 勉強します。</div>
-                        <div class="grammar-en">I study while listening to music.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">Potential form（〜られる／える）</div>
-                        <div class="grammar-example">漢字が 少し 読めます。</div>
-                        <div class="grammar-en">I can read a little kanji.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜前に／〜後で</div>
-                        <div class="grammar-example">寝る前に 歯を 磨きます。</div>
-                        <div class="grammar-en">I brush my teeth before going to sleep.</div>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Vocabulary</h3>
-                    <div class="vocab-grid" data-vocab="n4"></div>
-                </section>
-
-                <section class="block">
-                    <h3>Practice Questions</h3>
-                    <div class="qcard">
-                        <div class="qnum">Question 1</div>
-                        <div class="qtext">「テレビを 見＿ ごはんを 食べます。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. ながら</div>
-                            <div class="choice">B. まで</div>
-                            <div class="choice">C. ために</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (ながら)</div>
-                            <div class="meaning">"I eat while watching TV." — ながら links two actions happening at the
-                                same time.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 2</div>
-                        <div class="qtext">「この 部屋で 写真を 撮って＿ いけません。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. も</div>
-                            <div class="choice">B. は</div>
-                            <div class="choice">C. が</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: B (は)</div>
-                            <div class="meaning">"You must not take photos in this room." — てはいけません expresses
-                                prohibition.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 3</div>
-                        <div class="qtext">「クシさんは えいごが 少し ＿。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. 話せます</div>
-                            <div class="choice">B. 話します</div>
-                            <div class="choice">C. 話したい</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (話せます)</div>
-                            <div class="meaning">"Khusi-san can speak a little English." — the potential form expresses
-                                ability.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 4</div>
-                        <div class="qtext">「ご飯を 食べた＿、薬を 飲みます。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. あとで</div>
-                            <div class="choice">B. まえに</div>
-                            <div class="choice">C. ながら</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (あとで)</div>
-                            <div class="meaning">"After eating, I take medicine." — 〜たあとで means "after doing ~."</div>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- N3 -->
-            <section class="panel" id="panel-n3">
-                <div class="level-head">
-                    <div>
-                        <h2>N3</h2>
-                        <p class="sub">Slightly more complex expressions of reason, degree, and change — enough to
-                            follow parts of the news or daily conversation.</p>
-                    </div>
-                    <div class="stamp">Halfway<br>Mark</div>
-                </div>
-
-                <section class="block">
-                    <h3>Learn More (Free)</h3>
-                    <div class="link-grid">
-                        <a class="link-card" href="https://jlptsensei.com/jlpt-n3-grammar-list/" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Grammar list</div>
-                            <div class="link-title">JLPT Sensei — N3 Grammar</div>
-                            <div class="link-desc">Full free grammar list with example sentences.</div>
-                        </a>
-                        <a class="link-card" href="https://bunpro.jp/grammar_points?levels%5B%5D=3" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Practice</div>
-                            <div class="link-title">Bunpro — N3 Grammar</div>
-                            <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
-                        </a>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Grammar Points</h3>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜ば〜ほど</div>
-                        <div class="grammar-example">勉強すれば するほど、わかるように なります。</div>
-                        <div class="grammar-en">The more you study, the more you understand.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜おかげで</div>
-                        <div class="grammar-example">先生の おかげで、N3に 合格しました。</div>
-                        <div class="grammar-en">Thanks to my teacher, I passed N3.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜わけではない</div>
-                        <div class="grammar-example">忙しいから 行かない わけでは ありません。</div>
-                        <div class="grammar-en">It's not that I'm not going because I'm busy (there's another reason).
-                        </div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜ようになる</div>
-                        <div class="grammar-example">最近 漢字が 読めるように なりました。</div>
-                        <div class="grammar-en">Recently I've come to be able to read kanji.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜ばかり</div>
-                        <div class="grammar-example">日本に 来た ばかりです。</div>
-                        <div class="grammar-en">I have just come to Japan.</div>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Vocabulary</h3>
-                    <div class="vocab-grid" data-vocab="n3"></div>
-                </section>
-
-                <section class="block">
-                    <h3>Practice Questions</h3>
-                    <div class="qcard">
-                        <div class="qnum">Question 1</div>
-                        <div class="qtext">「田中さんの ＿で、無事に 引っ越しが できました。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. おかげ</div>
-                            <div class="choice">B. せい</div>
-                            <div class="choice">C. ため</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (おかげ)</div>
-                            <div class="meaning">"Thanks to Tanaka-san, I was able to move safely." おかげ has a positive
-                                nuance, unlike せい.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 2</div>
-                        <div class="qtext">「彼が 悪い ＿ ではない。状況が 悪かっただけだ。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. わけ</div>
-                            <div class="choice">B. こと</div>
-                            <div class="choice">C. もの</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (わけ)</div>
-                            <div class="meaning">"It's not that he is at fault; the situation was just bad." わけではない
-                                softens a conclusion.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 3</div>
-                        <div class="qtext">「たくさん 練習した ので、上手に 話せる＿ なりました。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. ように</div>
-                            <div class="choice">B. そうに</div>
-                            <div class="choice">C. ような</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (ように)</div>
-                            <div class="meaning">"Because I practiced a lot, I became able to speak well." — 〜ようになる
-                                marks a gradual change to a new state.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 4</div>
-                        <div class="qtext">「彼は 文句を 言う＿だ。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. ばかり</div>
-                            <div class="choice">B. だけ</div>
-                            <div class="choice">C. しか</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (ばかり)</div>
-                            <div class="meaning">"All he does is complain." — ばかり here implies "nothing but ~," with a
-                                slightly negative nuance.</div>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- N2 -->
-            <section class="panel" id="panel-n2">
-                <div class="level-head">
-                    <div>
-                        <h2>N2</h2>
-                        <p class="sub">Somewhat formal expressions used at work and in newspaper articles.</p>
-                    </div>
-                    <div class="stamp">Near<br>Fluent</div>
-                </div>
-
-                <section class="block">
-                    <h3>Learn More (Free)</h3>
-                    <div class="link-grid">
-                        <a class="link-card" href="https://jlptsensei.com/jlpt-n2-grammar-list/" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Grammar list</div>
-                            <div class="link-title">JLPT Sensei — N2 Grammar</div>
-                            <div class="link-desc">Full free grammar list with example sentences.</div>
-                        </a>
-                        <a class="link-card" href="https://bunpro.jp/grammar_points?levels%5B%5D=2" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Practice</div>
-                            <div class="link-title">Bunpro — N2 Grammar</div>
-                            <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
-                        </a>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Grammar Points</h3>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜にもかかわらず</div>
-                        <div class="grammar-example">雨にも かかわらず、試合は 行われた。</div>
-                        <div class="grammar-en">Despite the rain, the match was held.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜からには</div>
-                        <div class="grammar-example">日本で 働く からには、日本語を 頑張ります。</div>
-                        <div class="grammar-en">Now that I'm working in Japan, I'll do my best with Japanese.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜つつある</div>
-                        <div class="grammar-example">状況は 改善しつつ あります。</div>
-                        <div class="grammar-en">The situation is (gradually) improving.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜をきっかけに</div>
-                        <div class="grammar-example">病気を きっかけに、生活習慣を 見直した。</div>
-                        <div class="grammar-en">Triggered by my illness, I reconsidered my lifestyle habits.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜あげく</div>
-                        <div class="grammar-example">悩んだ あげく、仕事を 辞めることに した。</div>
-                        <div class="grammar-en">After much agonizing, I decided to quit my job.</div>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Vocabulary</h3>
-                    <div class="vocab-grid" data-vocab="n2"></div>
-                </section>
-
-                <section class="block">
-                    <h3>Practice Questions</h3>
-                    <div class="qcard">
-                        <div class="qnum">Question 1</div>
-                        <div class="qtext">「反対 ＿、計画は 実行された。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. にもかかわらず</div>
-                            <div class="choice">B. のもとで</div>
-                            <div class="choice">C. に沿って</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (にもかかわらず)</div>
-                            <div class="meaning">"The plan was carried out despite opposition."</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 2</div>
-                        <div class="qtext">「約束した ＿、必ず 守るべきだ。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. からには</div>
-                            <div class="choice">B. うえで</div>
-                            <div class="choice">C. だけあって</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (からには)</div>
-                            <div class="meaning">"Since you made a promise, you should definitely keep it."</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 3</div>
-                        <div class="qtext">「経済は 回復し＿ ある。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. つつ</div>
-                            <div class="choice">B. ながら</div>
-                            <div class="choice">C. がち</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (つつ)</div>
-                            <div class="meaning">"The economy is (gradually) recovering." — 〜つつある describes a change in
-                                progress.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 4</div>
-                        <div class="qtext">「引っ越しを ＿、生活習慣が 変わった。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. きっかけに</div>
-                            <div class="choice">B. もとに</div>
-                            <div class="choice">C. かわりに</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (きっかけに)</div>
-                            <div class="meaning">"Triggered by moving house, my lifestyle habits changed."</div>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- N1 -->
-            <section class="panel" id="panel-n1">
-                <div class="level-head">
-                    <div>
-                        <h2>N1</h2>
-                        <p class="sub">Formal, literary expressions found in news and opinion pieces.</p>
-                    </div>
-                    <div class="stamp">Top<br>Level</div>
-                </div>
-
-                <section class="block">
-                    <h3>Learn More (Free)</h3>
-                    <div class="link-grid">
-                        <a class="link-card" href="https://jlptsensei.com/jlpt-n1-grammar-list/" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Grammar list</div>
-                            <div class="link-title">JLPT Sensei — N1 Grammar</div>
-                            <div class="link-desc">Full free grammar list with example sentences.</div>
-                        </a>
-                        <a class="link-card" href="https://bunpro.jp/grammar_points?levels%5B%5D=1" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Practice</div>
-                            <div class="link-title">Bunpro — N1 Grammar</div>
-                            <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
-                        </a>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Grammar Points</h3>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜べからず</div>
-                        <div class="grammar-example">初心 忘る べからず。</div>
-                        <div class="grammar-en">Never forget your beginner's spirit. (formal prohibition/warning)</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜んがため</div>
-                        <div class="grammar-example">生きんがため、必死で 働いた。</div>
-                        <div class="grammar-en">He worked desperately in order to survive.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜きらいがある</div>
-                        <div class="grammar-example">彼は 物事を 悲観的に 考える きらいが ある。</div>
-                        <div class="grammar-en">He tends to think about things pessimistically. (mild criticism)</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜ならでは</div>
-                        <div class="grammar-example">これは この店 ならでは の 味だ。</div>
-                        <div class="grammar-en">This is a flavor unique to this shop.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">〜をものともせず</div>
-                        <div class="grammar-example">困難を ものともせず、彼女は 挑戦を 続けた。</div>
-                        <div class="grammar-en">Undaunted by the difficulties, she kept challenging herself.</div>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Vocabulary</h3>
-                    <div class="vocab-grid" data-vocab="n1"></div>
-                </section>
-
-                <section class="block">
-                    <h3>Practice Questions</h3>
-                    <div class="qcard">
-                        <div class="qnum">Question 1</div>
-                        <div class="qtext">「彼は 頭は いいが、努力を 怠る ＿ が ある。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. きらい</div>
-                            <div class="choice">B. しまつ</div>
-                            <div class="choice">C. ゆえ</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (きらい)</div>
-                            <div class="meaning">"He's smart, but tends to neglect effort." — mild, indirect criticism.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 2</div>
-                        <div class="qtext">「批判 ＿、彼は 自分の 信念を 貫いた。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. をものともせず</div>
-                            <div class="choice">B. にひきかえ</div>
-                            <div class="choice">C. をよそに</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (をものともせず)</div>
-                            <div class="meaning">"Undaunted by criticism, he held firm to his convictions." (をよそに is
-                                close but implies ignoring/disregarding rather than overcoming.)</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 3</div>
-                        <div class="qtext">「これは この 地方＿の 料理だ。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. ならでは</div>
-                            <div class="choice">B. にひきかえ</div>
-                            <div class="choice">C. にもまして</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (ならでは)</div>
-                            <div class="meaning">"This is a dish unique to this region." — 〜ならでは highlights something
-                                only possible because of X.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 4</div>
-                        <div class="qtext">「規則を 破る＿。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. べからず</div>
-                            <div class="choice">B. までもない</div>
-                            <div class="choice">C. ずくめ</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (べからず)</div>
-                            <div class="meaning">"One must not break the rules." — a formal, classical-style
-                                prohibition, often seen on signs/notices.</div>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- JFT -->
-            <section class="panel" id="panel-jft">
-                <div class="level-head">
-                    <div>
-                        <h2>JFT-Basic</h2>
-                        <p class="sub">The Japan Foundation Test for Basic Japanese — one of the requirements for the
-                            SSW visa. Focuses on everyday and workplace Japanese (roughly CEFR A2 level).</p>
-                    </div>
-                    <div class="stamp">Visa<br>Ready</div>
-                </div>
-
-                <div class="note">These are original practice samples I wrote, not real past exam questions — useful for
-                    getting a feel for the format and difficulty level, not for memorizing actual test content.</div>
-
-                <section class="block">
-                    <h3>Learn More (Free, Official)</h3>
-                    <div class="link-grid">
-                        <a class="link-card" href="https://www.jpf.go.jp/jft-basic/sample/q01.html" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Official</div>
-                            <div class="link-title">JFT-Basic — Official Sample Questions</div>
-                            <div class="link-desc">Real sample questions from the Japan Foundation, in the actual CBT
-                                format.</div>
-                        </a>
-                        <a class="link-card" href="https://www.jpf.go.jp/jft-basic/" target="_blank" rel="noopener">
-                            <div class="link-lvl">Official</div>
-                            <div class="link-title">JFT-Basic — Main Site</div>
-                            <div class="link-desc">Test structure, schedule, and study tips from the Japan Foundation.
-                            </div>
-                        </a>
-                        <a class="link-card" href="https://www.irodori.jpf.go.jp/" target="_blank" rel="noopener">
-                            <div class="link-lvl">Textbook</div>
-                            <div class="link-title">Irodori — Japanese for Life in Japan</div>
-                            <div class="link-desc">The free coursebook the JFT-Basic test content is closely aligned
-                                with.</div>
-                        </a>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Exam Structure</h3>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">文字と語彙</div>
-                        <div class="grammar-en">Characters &amp; vocabulary — basic kanji/vocab recognition for daily
-                            life and work.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">会話と表現</div>
-                        <div class="grammar-en">Conversation &amp; expression — picking the natural response in everyday
-                            situations.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">聴解</div>
-                        <div class="grammar-en">Listening — short workplace/daily-life audio clips with comprehension
-                            questions.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">読解</div>
-                        <div class="grammar-en">Reading — short notices, schedules, simple work instructions.</div>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Common Workplace Vocabulary</h3>
-                    <div class="vocab-grid" data-vocab="jft"></div>
-                </section>
-
-                <section class="block">
-                    <h3>Practice Questions</h3>
-                    <div class="qcard">
-                        <div class="qnum">Question 1 (Conversation &amp; Expression)</div>
-                        <div class="qtext">上司：「今日は 早めに 帰っても いいですよ。」</div>
-                        <div class="qinstruction">What is the most natural reply?</div>
-                        <div class="choices">
-                            <div class="choice">A. すみません、頑張ります。</div>
-                            <div class="choice">B. ありがとうございます。お先に 失礼します。</div>
-                            <div class="choice">C. いいえ、いいです。</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: B</div>
-                            <div class="meaning">"Thank you. I'll head out first, then." — the polite, natural response
-                                when told you may leave early.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 2 (Reading)</div>
-                        <div class="qtext">貼り紙：「本日 12時から13時まで 休憩室 使用不可（清掃中）」</div>
-                        <div class="qinstruction">What does this notice mean?</div>
-                        <div class="choices">
-                            <div class="choice">A. 休憩室は一日中使えない</div>
-                            <div class="choice">B. 12時〜13時は清掃のため休憩室が使えない</div>
-                            <div class="choice">C. 休憩室が新しくなった</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: B</div>
-                            <div class="meaning">"The break room cannot be used from 12:00–13:00 today due to cleaning."
-                            </div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 3 (Vocabulary)</div>
-                        <div class="qtext">「体調が 悪いので、明日 ＿ したいです。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. 有給</div>
-                            <div class="choice">B. 残業</div>
-                            <div class="choice">C. 出勤</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (有給)</div>
-                            <div class="meaning">"I don't feel well, so I'd like to take paid leave tomorrow."</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 4 (Vocabulary)</div>
-                        <div class="qtext">「今日は 残業が 多くて、とても ＿。」</div>
-                        <div class="qinstruction">What word goes in the blank (＿)?</div>
-                        <div class="choices">
-                            <div class="choice">A. 疲れました</div>
-                            <div class="choice">B. 嬉しいです</div>
-                            <div class="choice">C. 暇です</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (疲れました)</div>
-                            <div class="meaning">"There was a lot of overtime today, so I'm very tired."</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 5 (Conversation &amp; Expression)</div>
-                        <div class="qtext">同僚：「手伝いましょうか。」</div>
-                        <div class="qinstruction">What is the most natural reply, accepting the offer?</div>
-                        <div class="choices">
-                            <div class="choice">A. はい、お願いします。</div>
-                            <div class="choice">B. いいえ、いいです、いいです。</div>
-                            <div class="choice">C. さようなら。</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A</div>
-                            <div class="meaning">"Yes, please (I'd appreciate that)." — the natural way to accept a
-                                colleague's offer to help.</div>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- KAIGO -->
-            <section class="panel" id="panel-kaigo">
-                <div class="level-head">
-                    <div>
-                        <h2>Kaigo SSW</h2>
-                        <p class="sub">Specified Skilled Worker (Caregiving) — the Care Skills Evaluation Test and Care
-                            Japanese Evaluation Test. Covers professional vocabulary used on the job.</p>
-                    </div>
-                    <div class="stamp">Care<br>Field</div>
-                </div>
-
-                <div class="note">These are also original practice samples — not real exam questions — meant to build
-                    familiarity with common caregiving terms used on the job.</div>
-
-                <section class="block">
-                    <h3>Learn More (Free, Official)</h3>
-                    <div class="link-grid">
-                        <a class="link-card" href="https://jicwels.or.jp/fcw/?page_id=15601" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Official</div>
-                            <div class="link-title">JICWELS — Kaigo Study Tools</div>
-                            <div class="link-desc">Official study texts and sample questions for the Kaigo SSW exams, in
-                                multiple languages.</div>
-                        </a>
-                        <a class="link-card" href="https://www.mhlw.go.jp/stf/newpage_28131.html" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">Official</div>
-                            <div class="link-title">MHLW — Kaigo Exam Study Text</div>
-                            <div class="link-desc">Free study text from the Ministry of Health, Labour and Welfare,
-                                translated into several languages.</div>
-                        </a>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Exam Structure</h3>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">介護技能評価試験</div>
-                        <div class="grammar-en">Care skills evaluation test — knowledge of caregiving procedures,
-                            safety, and basic care techniques.</div>
-                    </div>
-                    <div class="grammar-item">
-                        <div class="grammar-pattern">介護日本語評価試験</div>
-                        <div class="grammar-en">Care Japanese evaluation test — Japanese vocabulary and communication
-                            specific to the care setting.</div>
-                    </div>
-                </section>
-
-                <section class="block">
-                    <h3>Caregiving Vocabulary</h3>
-                    <div class="vocab-grid" data-vocab="kaigo"></div>
-                </section>
-
-                <section class="block">
-                    <h3>Practice Questions</h3>
-                    <div class="qcard">
-                        <div class="qnum">Question 1</div>
-                        <div class="qtext">ベッドから 車椅子へ 利用者を 移す 介助を 何と 言いますか。</div>
-                        <div class="choices">
-                            <div class="choice">A. 移乗介助</div>
-                            <div class="choice">B. 食事介助</div>
-                            <div class="choice">C. 入浴介助</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (移乗介助)</div>
-                            <div class="meaning">"Transfer assistance" — helping a care recipient move, e.g. from bed to
-                                wheelchair.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 2</div>
-                        <div class="qtext">長時間 同じ 姿勢で 寝ていると できやすい 皮膚の 傷を 何と 言いますか。</div>
-                        <div class="choices">
-                            <div class="choice">A. 褥瘡（じょくそう）</div>
-                            <div class="choice">B. 骨折</div>
-                            <div class="choice">C. やけど</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (褥瘡)</div>
-                            <div class="meaning">"Bedsore / pressure ulcer" — skin damage from prolonged pressure in one
-                                position.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 3</div>
-                        <div class="qtext">利用者の 体温・脈拍・血圧などを 測ることを 何と 言いますか。</div>
-                        <div class="choices">
-                            <div class="choice">A. バイタルサインの測定</div>
-                            <div class="choice">B. 排泄介助</div>
-                            <div class="choice">C. 口腔ケア</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (バイタルサインの測定)</div>
-                            <div class="meaning">"Measuring vital signs" — temperature, pulse, blood pressure, etc.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 4</div>
-                        <div class="qtext">食べ物や 飲み物を 飲み込む力が 弱くなることを 何と 言いますか。</div>
-                        <div class="choices">
-                            <div class="choice">A. 嚥下障害</div>
-                            <div class="choice">B. 骨折</div>
-                            <div class="choice">C. 認知症</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (嚥下障害／えんげしょうがい)</div>
-                            <div class="meaning">"Dysphagia / swallowing difficulty" — a weakened ability to swallow
-                                food or liquid safely.</div>
-                        </div>
-                    </div>
-                    <div class="qcard">
-                        <div class="qnum">Question 5</div>
-                        <div class="qtext">介護保険を 使って、利用者の 家に 行って ケアを することを 何と 言いますか。</div>
-                        <div class="choices">
-                            <div class="choice">A. 訪問介護</div>
-                            <div class="choice">B. 施設介護</div>
-                            <div class="choice">C. 入院</div>
-                        </div>
-                        <button class="reveal-btn">Show answer</button>
-                        <div class="answer">
-                            <div class="correct">Correct answer: A (訪問介護)</div>
-                            <div class="meaning">"Home-visit care" — providing care at the recipient's own home, funded
-                                through long-term care insurance.</div>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- MATERIALS -->
-            <section class="panel" id="panel-materials">
-                <div class="level-head">
-                    <div>
-                        <h2>Free Materials</h2>
-                        <p class="sub">Direct links to Irodori — Japanese for Life in Japan, the free official textbook
-                            published by the Japan Foundation.</p>
-                    </div>
-                    <div class="stamp">Free<br>Official</div>
-                </div>
-
-                <section class="block">
-                    <h3>Irodori — Japanese for Life in Japan</h3>
-                    <div class="link-grid">
-                        <a class="link-card" href="https://www.irodori.jpf.go.jp/starter/pdf.html" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">A1 · Starter (入門)</div>
-                            <div class="link-title">Irodori — Starter</div>
-                            <div class="link-desc">Hiragana, katakana, and your very first steps. Free PDF and audio
-                                downloads.</div>
-                            <div class="link-url">irodori.jpf.go.jp/starter →</div>
-                        </a>
-                        <a class="link-card" href="https://www.irodori.jpf.go.jp/elementary01/pdf.html" target="_blank"
-                            rel="noopener">
-                            <div class="link-lvl">A2 · Elementary 1/2 (初級1／2)</div>
-                            <div class="link-title">Irodori — Elementary 1 (continues to Elementary 2)</div>
-                            <div class="link-desc">Everyday-life Japanese that also helps with JFT-Basic prep. Free PDF
-                                and audio downloads.</div>
-                            <div class="link-url">irodori.jpf.go.jp/elementary01 →</div>
-                        </a>
-                    </div>
-                    <div class="note" style="margin-top:20px;">An official answer key exists only for the Grammar
-                        Worksheets, not for the exercises inside the main textbook itself. For those, ask in the "Ask
-                        AI" tab, or share a photo here directly.</div>
-                    <a class="link-card" href="https://www.irodori.jpf.go.jp/resources.html" target="_blank"
-                        rel="noopener" style="margin-top:4px;">
-                        <div class="link-lvl">Answer key included</div>
-                        <div class="link-title">Grammar Worksheets &amp; Answer Key (official resources page)</div>
-                        <div class="link-desc">The Irodori official supplementary materials page. The grammar worksheets
-                            and their answer key PDFs are here.</div>
-                        <div class="link-url">irodori.jpf.go.jp/resources →</div>
-                    </a>
-                </section>
-            </section>
-
-            <!-- PROGRESS -->
-            <section class="panel" id="panel-progress">
-                <div class="level-head">
-                    <div>
-                        <h2>Your Progress</h2>
-                        <p class="sub">How much vocabulary you've checked off as learned, per level. Saved privately in
-                            this browser only.</p>
-                    </div>
-                    <div class="stamp">Keep<br>Going</div>
-                </div>
-
-                <div class="progress-total">
-                    <div>
-                        <div style="font-size:0.85rem; color:var(--ink-soft); margin-bottom:2px;">Total learned</div>
-                        <div class="big" id="progress-total-text">0 / 0</div>
-                    </div>
-                    <button class="progress-reset" id="progress-reset-btn" type="button">Reset all progress</button>
-                </div>
-
-                <section class="block">
-                    <h3>By Level</h3>
-                    <div id="progress-list"></div>
-                </section>
-            </section>
-
-            <!-- ASK AI -->
-            <section class="panel" id="panel-ask">
-                <div class="level-head">
-                    <div>
-                        <h2>Ask AI</h2>
-                        <p class="sub">Ask about grammar, word meanings, example sentences — anything you're unsure
-                            about, in Japanese or English.</p>
-                    </div>
-                    <div class="stamp">Ask<br>Away</div>
-                </div>
-
-                <div id="ask-unavailable" class="note" style="display:none;">
-                    This feature isn't available in this view right now — try reopening the page, or check back later.
-                </div>
-
-                <div id="ask-app" style="display:none;">
-                    <div class="qcard">
-                        <label for="ask-input"
-                            style="display:block; font-size:0.9rem; color:var(--ink-soft); margin-bottom:8px;">Type your
-                            question (Japanese or English)</label>
-                        <textarea id="ask-input" rows="3"
-                            placeholder="e.g. What's the difference between 「〜ばかり」 and 「〜だけ」?"
-                            style="width:100%; font-family:inherit; font-size:0.98rem; padding:10px 12px; border-radius:6px; border:1px solid var(--line); background:var(--paper); color:var(--ink); resize:vertical;"></textarea>
-                        <div style="display:flex; gap:10px; align-items:center; margin-top:10px;">
-                            <button id="ask-btn" class="reveal-btn" type="button">Ask</button>
-                            <button id="ask-stop" class="reveal-btn" type="button"
-                                style="background:var(--hanko); display:none;">Stop</button>
-                            <span id="ask-status" style="font-size:0.85rem; color:var(--ink-soft);"></span>
-                        </div>
-                    </div>
-                    <div id="ask-answer" class="qcard" style="display:none; white-space:pre-wrap; font-size:0.98rem;">
-                    </div>
-                </div>
-            </section>
-
-        </main>
+<div class="frame">
+  <div class="mobile-brand" id="mobile-brand">
+    <h1>Japanese Study Notebook</h1>
+    <p>For Special One only, with all efforts. ❤</p>
+  </div>
+  <nav class="sidebar" id="sidebar">
+    <div class="brand">
+      <h1>Japanese Study Notebook</h1>
+      <p>N5 to N1, JFT-Basic, and SSW Kaigo — For Special One only, with all efforts.</p>
     </div>
 
-    <script>
-        (function () {
-            var vocab = {
-                n5: [
-                    ["学校", "がっこう", "school"], ["食べる", "たべる", "to eat"], ["飲む", "のむ", "to drink"],
-                    ["大きい", "おおきい", "big"], ["小さい", "ちいさい", "small"], ["会社", "かいしゃ", "company"],
-                    ["電話", "でんわ", "telephone"], ["今日", "きょう", "today"], ["明日", "あした", "tomorrow"],
-                    ["友達", "ともだち", "friend"]
-                ],
-                n4: [
-                    ["経験", "けいけん", "experience"], ["準備", "じゅんび", "preparation"], ["説明", "せつめい", "explanation"],
-                    ["危険", "きけん", "dangerous"], ["便利", "べんり", "convenient"], ["習慣", "しゅうかん", "habit"],
-                    ["予定", "よてい", "plan / schedule"], ["相談", "そうだん", "consultation"], ["訪問", "ほうもん", "visit"],
-                    ["苦手", "にがて", "weak point / not good at"]
-                ],
-                n3: [
-                    ["状況", "じょうきょう", "situation"], ["影響", "えいきょう", "influence"], ["判断", "はんだん", "judgment"],
-                    ["対応", "たいおう", "response / dealing with"], ["確認", "かくにん", "confirmation"], ["向上", "こうじょう", "improvement"],
-                    ["負担", "ふたん", "burden / load"], ["維持", "いじ", "maintenance"], ["割合", "わりあい", "proportion / rate"],
-                    ["継続", "けいぞく", "continuation"]
-                ],
-                n2: [
-                    ["傾向", "けいこう", "tendency"], ["見解", "けんかい", "viewpoint / opinion"], ["妥協", "だきょう", "compromise"],
-                    ["促進", "そくしん", "promotion / facilitation"], ["把握", "はあく", "grasp / understanding"], ["矛盾", "むじゅん", "contradiction"],
-                    ["徹底", "てってい", "thoroughness"], ["需要", "じゅよう", "demand"], ["抑制", "よくせい", "suppression / restraint"],
-                    ["顕著", "けんちょ", "remarkable / marked"]
-                ],
-                n1: [
-                    ["醸成", "じょうせい", "fostering / cultivating"], ["逸脱", "いつだつ", "deviation"], ["払拭", "ふっしょく", "dispelling / wiping away"],
-                    ["遂行", "すいこう", "execution / carrying out"], ["是正", "ぜせい", "correction / rectification"], ["示唆", "しさ", "suggestion / implication"],
-                    ["模索", "もさく", "groping for / searching for"], ["顕在化", "けんざいか", "becoming apparent"], ["懸念", "けねん", "concern / apprehension"],
-                    ["整合性", "せいごうせい", "consistency / coherence"]
-                ],
-                jft: [
-                    ["出勤", "しゅっきん", "going to work"], ["休憩", "きゅうけい", "break"], ["シフト", "しふと", "shift"],
-                    ["給料", "きゅうりょう", "salary"], ["遅刻", "ちこく", "being late"], ["早退", "そうたい", "leaving early"],
-                    ["有給", "ゆうきゅう", "paid leave"], ["履歴書", "りれきしょ", "resume / CV"], ["面接", "めんせつ", "interview"],
-                    ["時給", "じきゅう", "hourly wage"]
-                ],
-                kaigo: [
-                    ["利用者", "りようしゃ", "care recipient / service user"], ["排泄介助", "はいせつかいじょ", "toileting assistance"],
-                    ["入浴介助", "にゅうよくかいじょ", "bathing assistance"], ["食事介助", "しょくじかいじょ", "meal assistance"],
-                    ["移乗", "いじょう", "transferring (e.g. bed to wheelchair)"], ["褥瘡", "じょくそう", "bedsore / pressure ulcer"],
-                    ["認知症", "にんちしょう", "dementia"], ["車椅子", "くるまいす", "wheelchair"],
-                    ["介護記録", "かいごきろく", "care record"], ["バイタルサイン", "ばいたるさいん", "vital signs"]
-                ]
-            };
+    <div class="tab-group-label">JLPT LEVELS</div>
+    <button class="tab" data-panel="n5" aria-selected="true"><span class="lvl">N5</span> First steps</button>
+    <button class="tab" data-panel="n4"><span class="lvl">N4</span> Building basics</button>
+    <button class="tab" data-panel="n3"><span class="lvl">N3</span> Everyday conversation</button>
+    <button class="tab" data-panel="n2"><span class="lvl">N2</span> Working level</button>
+    <button class="tab" data-panel="n1"><span class="lvl">N1</span> Advanced</button>
 
-            function safeGet(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
-            function safeSet(key, val) { try { localStorage.setItem(key, val); } catch (e) { } }
-            function safeRemove(key) { try { localStorage.removeItem(key); } catch (e) { } }
+    <div class="tab-group-label">WORK &amp; SPECIALIZED EXAMS</div>
+    <button class="tab" data-panel="jft"><span class="lvl">JFT</span> Basic Test</button>
+    <button class="tab" data-panel="kaigo"><span class="lvl">介護</span> SSW Kaigo Exam</button>
 
-            var levelLabels = { n5: 'N5', n4: 'N4', n3: 'N3', n2: 'N2', n1: 'N1', jft: 'JFT', kaigo: 'Kaigo' };
+    <div class="tab-group-label">MATERIALS &amp; SUPPORT</div>
+    <button class="tab" data-panel="materials"><span class="lvl">📘</span> Free Materials</button>
+    <button class="tab" data-panel="ask"><span class="lvl">🤖</span> Ask AI</button>
+    <button class="tab" data-panel="progress"><span class="lvl">📊</span> Your Progress</button>
+  </nav>
 
-            function renderProgress() {
-                var listEl = document.getElementById('progress-list');
-                var totalTextEl = document.getElementById('progress-total-text');
-                if (!listEl || !totalTextEl) return;
-                listEl.innerHTML = '';
-                var grandLearned = 0, grandTotal = 0;
-                Object.keys(vocab).forEach(function (level) {
-                    var list = vocab[level];
-                    var learned = 0;
-                    list.forEach(function (item, idx) {
-                        if (safeGet('v-' + level + '-' + idx) === '1') learned++;
-                    });
-                    grandLearned += learned;
-                    grandTotal += list.length;
-                    var pct = list.length ? Math.round((learned / list.length) * 100) : 0;
-                    var row = document.createElement('div');
-                    row.className = 'progress-row';
-                    row.innerHTML =
-                        '<div class="progress-label">' + (levelLabels[level] || level) + '</div>' +
-                        '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%;"></div></div>' +
-                        '<div class="progress-count">' + learned + ' / ' + list.length + '</div>';
-                    listEl.appendChild(row);
-                });
-                totalTextEl.textContent = grandLearned + ' / ' + grandTotal;
-            }
+  <main>
 
-            document.querySelectorAll('[data-vocab]').forEach(function (grid) {
-                var level = grid.getAttribute('data-vocab');
-                var list = vocab[level] || [];
-                list.forEach(function (item, idx) {
-                    var id = 'v-' + level + '-' + idx;
-                    var card = document.createElement('div');
-                    card.className = 'vocab-card';
-                    var checked = safeGet(id) === '1';
-                    card.innerHTML =
-                        '<label><input type="checkbox" ' + (checked ? 'checked' : '') + ' aria-label="learned"></label>' +
-                        '<div style="flex:1;">' +
-                        '<span class="jp">' + item[0] + '</span>' +
-                        '<span class="reading">' + item[1] + '</span>' +
-                        '</div>' +
-                        '<div class="en">' + item[2] + '</div>';
-                    var cb = card.querySelector('input');
-                    cb.addEventListener('change', function () {
-                        safeSet(id, cb.checked ? '1' : '0');
-                        renderProgress();
-                    });
-                    grid.appendChild(card);
-                });
-            });
+    <!-- N5 -->
+    <section class="panel active" id="panel-n5">
+      <div class="level-head">
+        <div>
+          <h2>N5</h2>
+          <p class="sub">Hiragana, katakana, and the most basic sentence patterns — self-introductions and everyday greetings.</p>
+        </div>
+        <div class="stamp">First<br>Steps</div>
+      </div>
 
-            renderProgress();
+      <section class="block">
+        <h3>Learn More (Free)</h3>
+        <div class="link-grid">
+          <a class="link-card" href="https://www.irodori.jpf.go.jp/starter/pdf.html" target="_blank" rel="noopener">
+            <div class="link-lvl">Textbook</div>
+            <div class="link-title">Irodori — Starter (入門)</div>
+            <div class="link-desc">Free official coursebook matching N5/A1 level.</div>
+          </a>
+          <a class="link-card" href="https://jlptsensei.com/jlpt-n5-grammar-list/" target="_blank" rel="noopener">
+            <div class="link-lvl">Grammar list</div>
+            <div class="link-title">JLPT Sensei — N5 Grammar</div>
+            <div class="link-desc">Full free grammar list with example sentences.</div>
+          </a>
+          <a class="link-card" href="https://bunpro.jp/grammar_points?levels%5B%5D=5" target="_blank" rel="noopener">
+            <div class="link-lvl">Practice</div>
+            <div class="link-title">Bunpro — N5 Grammar</div>
+            <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
+          </a>
+        </div>
+      </section>
 
-            var resetBtn = document.getElementById('progress-reset-btn');
-            if (resetBtn) {
-                resetBtn.addEventListener('click', function () {
-                    if (!window.confirm('Reset all learned-vocab progress? This cannot be undone.')) return;
-                    Object.keys(vocab).forEach(function (level) {
-                        vocab[level].forEach(function (item, idx) { safeRemove('v-' + level + '-' + idx); });
-                    });
-                    document.querySelectorAll('.vocab-card input[type=checkbox]').forEach(function (cb) { cb.checked = false; });
-                    renderProgress();
-                });
-            }
+      <section class="block">
+        <h3>Grammar Points</h3>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜は〜です</div>
+          <div class="grammar-example">これは 本 です。</div>
+          <div class="grammar-en">This is a book.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜があります／います</div>
+          <div class="grammar-example">机の上に 猫が います。</div>
+          <div class="grammar-en">There is a cat on the desk.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">Verb ます form</div>
+          <div class="grammar-example">毎日 日本語を 勉強します。</div>
+          <div class="grammar-en">I study Japanese every day.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜たいです</div>
+          <div class="grammar-example">大阪に 帰りたいです。</div>
+          <div class="grammar-en">I want to go back to Osaka.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜ませんか</div>
+          <div class="grammar-example">一緒に ジムへ 行きませんか。</div>
+          <div class="grammar-en">Would you like to go to the gym together?</div>
+        </div>
+      </section>
 
-            document.querySelectorAll('.tab').forEach(function (tab) {
-                tab.addEventListener('click', function () {
-                    document.querySelectorAll('.tab').forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
-                    document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
-                    tab.setAttribute('aria-selected', 'true');
-                    document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
-                    window.scrollTo({ top: 0, behavior: 'instant' });
-                });
-            });
+      <section class="block">
+        <h3>Vocabulary</h3>
+        <div class="vocab-grid" data-vocab="n5"></div>
+      </section>
 
-            document.querySelectorAll('.reveal-btn').forEach(function (btn) {
-                if (btn.id === 'ask-btn' || btn.id === 'ask-stop') return;
-                btn.addEventListener('click', function () {
-                    var ans = btn.parentElement.querySelector('.answer');
-                    var showing = ans.classList.toggle('shown');
-                    btn.textContent = showing ? 'Hide answer' : 'Show answer';
-                });
-            });
+      <section class="block">
+        <h3>Practice Questions</h3>
+        <div class="qcard">
+          <div class="qnum">Question 1</div>
+          <div class="qtext">「わたし＿がくせいです。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. を</div><div class="choice">B. は</div><div class="choice">C. に</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: B (は)</div><div class="meaning">"I am a student." — は marks the topic of the sentence.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 2</div>
+          <div class="qtext">「あした ともだち＿ あいます。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. と</div><div class="choice">B. の</div><div class="choice">C. も</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (と)</div><div class="meaning">"I will meet my friend tomorrow." — と marks who you do something together with.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 3</div>
+          <div class="qtext">「テーブルの 上に ペンが ＿。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. います</div><div class="choice">B. あります</div><div class="choice">C. します</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: B (あります)</div><div class="meaning">"There is a pen on the table." — あります is used for non-living things; います is for people/animals.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 4</div>
+          <div class="qtext">「わたしは にほんごを べんきょうし＿です。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. たい</div><div class="choice">B. ます</div><div class="choice">C. ません</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (たい)</div><div class="meaning">"I want to study Japanese." — verb stem + たい expresses "want to do."</div></div>
+        </div>
+      </section>
+    </section>
 
-            (async function initAsk() {
-                var unavailableEl = document.getElementById('ask-unavailable');
-                var appEl = document.getElementById('ask-app');
-                var input = document.getElementById('ask-input');
-                var askBtn = document.getElementById('ask-btn');
-                var stopBtn = document.getElementById('ask-stop');
-                var statusEl = document.getElementById('ask-status');
-                var answerEl = document.getElementById('ask-answer');
+    <!-- N4 -->
+    <section class="panel" id="panel-n4">
+      <div class="level-head">
+        <div>
+          <h2>N4</h2>
+          <p class="sub">Extended て-form usage, the potential form, and simple reason/condition expressions.</p>
+        </div>
+        <div class="stamp">Building<br>Basics</div>
+      </div>
 
-                var sample = null;
-                try {
-                    sample = (window.claude && typeof window.claude.use === 'function') ? await window.claude.use('sample') : null;
-                } catch (e) { sample = null; }
+      <section class="block">
+        <h3>Learn More (Free)</h3>
+        <div class="link-grid">
+          <a class="link-card" href="https://www.irodori.jpf.go.jp/elementary01/pdf.html" target="_blank" rel="noopener">
+            <div class="link-lvl">Textbook</div>
+            <div class="link-title">Irodori — Elementary 1/2 (初級1／2)</div>
+            <div class="link-desc">Free official coursebook covering N4/A2 material.</div>
+          </a>
+          <a class="link-card" href="https://jlptsensei.com/jlpt-n4-grammar-list/" target="_blank" rel="noopener">
+            <div class="link-lvl">Grammar list</div>
+            <div class="link-title">JLPT Sensei — N4 Grammar</div>
+            <div class="link-desc">Full free grammar list with example sentences.</div>
+          </a>
+          <a class="link-card" href="https://bunpro.jp/grammar_points?levels%5B%5D=4" target="_blank" rel="noopener">
+            <div class="link-lvl">Practice</div>
+            <div class="link-title">Bunpro — N4 Grammar</div>
+            <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
+          </a>
+        </div>
+      </section>
 
-                if (!sample) {
-                    unavailableEl.style.display = 'block';
-                    appEl.style.display = 'none';
-                    return;
-                }
-                unavailableEl.style.display = 'none';
-                appEl.style.display = 'block';
+      <section class="block">
+        <h3>Grammar Points</h3>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜てもいいです</div>
+          <div class="grammar-example">ここに 座っても いいですか。</div>
+          <div class="grammar-en">May I sit here?</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜てはいけません</div>
+          <div class="grammar-example">ここで タバコを 吸っては いけません。</div>
+          <div class="grammar-en">You must not smoke here.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜ながら</div>
+          <div class="grammar-example">音楽を 聞きながら 勉強します。</div>
+          <div class="grammar-en">I study while listening to music.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">Potential form（〜られる／える）</div>
+          <div class="grammar-example">漢字が 少し 読めます。</div>
+          <div class="grammar-en">I can read a little kanji.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜前に／〜後で</div>
+          <div class="grammar-example">寝る前に 歯を 磨きます。</div>
+          <div class="grammar-en">I brush my teeth before going to sleep.</div>
+        </div>
+      </section>
 
-                var ctl = null;
+      <section class="block">
+        <h3>Vocabulary</h3>
+        <div class="vocab-grid" data-vocab="n4"></div>
+      </section>
 
-                function setBusy(busy) {
-                    askBtn.disabled = busy;
-                    stopBtn.style.display = busy ? 'inline-block' : 'none';
-                }
+      <section class="block">
+        <h3>Practice Questions</h3>
+        <div class="qcard">
+          <div class="qnum">Question 1</div>
+          <div class="qtext">「テレビを 見＿ ごはんを 食べます。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. ながら</div><div class="choice">B. まで</div><div class="choice">C. ために</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (ながら)</div><div class="meaning">"I eat while watching TV." — ながら links two actions happening at the same time.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 2</div>
+          <div class="qtext">「この 部屋で 写真を 撮って＿ いけません。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. も</div><div class="choice">B. は</div><div class="choice">C. が</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: B (は)</div><div class="meaning">"You must not take photos in this room." — てはいけません expresses prohibition.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 3</div>
+          <div class="qtext">「田中さんは えいごが 少し ＿。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. 話せます</div><div class="choice">B. 話します</div><div class="choice">C. 話したい</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (話せます)</div><div class="meaning">"Tanaka-san can speak a little English." — the potential form expresses ability.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 4</div>
+          <div class="qtext">「ご飯を 食べた＿、薬を 飲みます。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. あとで</div><div class="choice">B. まえに</div><div class="choice">C. ながら</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (あとで)</div><div class="meaning">"After eating, I take medicine." — 〜たあとで means "after doing ~."</div></div>
+        </div>
+      </section>
+    </section>
 
-                function errorCopy(code) {
-                    switch (code) {
-                        case 'not_granted': return 'This feature is not allowed for this session.';
-                        case 'sampling_disabled': return 'This feature is not available for this account.';
-                        case 'rate_limited': return 'Too many requests — please try again shortly.';
-                        case 'refused': return "Couldn't answer that — try rephrasing your question.";
-                        case 'cancelled': return '';
-                        default: return 'Something went wrong — please try again.';
-                    }
-                }
+    <!-- N3 -->
+    <section class="panel" id="panel-n3">
+      <div class="level-head">
+        <div>
+          <h2>N3</h2>
+          <p class="sub">Slightly more complex expressions of reason, degree, and change — enough to follow parts of the news or daily conversation.</p>
+        </div>
+        <div class="stamp">Halfway<br>Mark</div>
+      </div>
 
-                askBtn.addEventListener('click', async function () {
-                    var q = input.value.trim();
-                    if (!q) return;
-                    ctl = new AbortController();
-                    setBusy(true);
-                    statusEl.textContent = 'Thinking...';
-                    answerEl.style.display = 'block';
-                    answerEl.textContent = '';
+      <section class="block">
+        <h3>Learn More (Free)</h3>
+        <div class="link-grid">
+          <a class="link-card" href="https://jlptsensei.com/jlpt-n3-grammar-list/" target="_blank" rel="noopener">
+            <div class="link-lvl">Grammar list</div>
+            <div class="link-title">JLPT Sensei — N3 Grammar</div>
+            <div class="link-desc">Full free grammar list with example sentences.</div>
+          </a>
+          <a class="link-card" href="https://bunpro.jp/grammar_points?levels%5B%5D=3" target="_blank" rel="noopener">
+            <div class="link-lvl">Practice</div>
+            <div class="link-title">Bunpro — N3 Grammar</div>
+            <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
+          </a>
+        </div>
+      </section>
 
-                    var prompt = "You are a friendly, encouraging Japanese-language study helper for a learner preparing for JLPT (N5 to N1), the JFT-Basic test, and the SSW Kaigo (caregiving) exam. " +
-                        "Answer clearly and simply, in English, but keep any Japanese words, grammar patterns, and example sentences in Japanese. If the question is about grammar or vocabulary, give: 1) a short explanation, 2) one or two example sentences in Japanese with English translations, 3) a brief note on nuance or common mistakes if relevant. Keep the answer focused and not too long.\n\nQuestion: " + q;
+      <section class="block">
+        <h3>Grammar Points</h3>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜ば〜ほど</div>
+          <div class="grammar-example">勉強すれば するほど、わかるように なります。</div>
+          <div class="grammar-en">The more you study, the more you understand.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜おかげで</div>
+          <div class="grammar-example">先生の おかげで、N3に 合格しました。</div>
+          <div class="grammar-en">Thanks to my teacher, I passed N3.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜わけではない</div>
+          <div class="grammar-example">忙しいから 行かない わけでは ありません。</div>
+          <div class="grammar-en">It's not that I'm not going because I'm busy (there's another reason).</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜ようになる</div>
+          <div class="grammar-example">最近 漢字が 読めるように なりました。</div>
+          <div class="grammar-en">Recently I've come to be able to read kanji.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜ばかり</div>
+          <div class="grammar-example">日本に 来た ばかりです。</div>
+          <div class="grammar-en">I have just come to Japan.</div>
+        </div>
+      </section>
 
-                    try {
-                        var result = await sample(prompt, {
-                            signal: ctl.signal,
-                            modelTier: 'default',
-                            onText: function (evt) { statusEl.textContent = ''; answerEl.textContent = evt.text; }
-                        });
-                        if (result.truncated) {
-                            answerEl.textContent += '\n\n(Answer was cut short — try asking a more specific question.)';
-                        }
-                    } catch (e) {
-                        var msg = errorCopy(e && e.code);
-                        if (e && e.text) { answerEl.textContent = e.text; }
-                        if (msg) { statusEl.textContent = msg; }
-                        else if (e && e.code === 'cancelled') { statusEl.textContent = 'Stopped.'; }
-                    } finally {
-                        setBusy(false);
-                        ctl = null;
-                    }
-                });
+      <section class="block">
+        <h3>Vocabulary</h3>
+        <div class="vocab-grid" data-vocab="n3"></div>
+      </section>
 
-                stopBtn.addEventListener('click', function () { if (ctl) ctl.abort(); });
-            })();
-        })();
-    </script>
+      <section class="block">
+        <h3>Practice Questions</h3>
+        <div class="qcard">
+          <div class="qnum">Question 1</div>
+          <div class="qtext">「田中さんの ＿で、無事に 引っ越しが できました。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. おかげ</div><div class="choice">B. せい</div><div class="choice">C. ため</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (おかげ)</div><div class="meaning">"Thanks to Tanaka-san, I was able to move safely." おかげ has a positive nuance, unlike せい.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 2</div>
+          <div class="qtext">「彼が 悪い ＿ ではない。状況が 悪かっただけだ。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. わけ</div><div class="choice">B. こと</div><div class="choice">C. もの</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (わけ)</div><div class="meaning">"It's not that he is at fault; the situation was just bad." わけではない softens a conclusion.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 3</div>
+          <div class="qtext">「たくさん 練習した ので、上手に 話せる＿ なりました。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. ように</div><div class="choice">B. そうに</div><div class="choice">C. ような</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (ように)</div><div class="meaning">"Because I practiced a lot, I became able to speak well." — 〜ようになる marks a gradual change to a new state.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 4</div>
+          <div class="qtext">「彼は 文句を 言う＿だ。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. ばかり</div><div class="choice">B. だけ</div><div class="choice">C. しか</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (ばかり)</div><div class="meaning">"All he does is complain." — ばかり here implies "nothing but ~," with a slightly negative nuance.</div></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- N2 -->
+    <section class="panel" id="panel-n2">
+      <div class="level-head">
+        <div>
+          <h2>N2</h2>
+          <p class="sub">Somewhat formal expressions used at work and in newspaper articles.</p>
+        </div>
+        <div class="stamp">Near<br>Fluent</div>
+      </div>
+
+      <section class="block">
+        <h3>Learn More (Free)</h3>
+        <div class="link-grid">
+          <a class="link-card" href="https://jlptsensei.com/jlpt-n2-grammar-list/" target="_blank" rel="noopener">
+            <div class="link-lvl">Grammar list</div>
+            <div class="link-title">JLPT Sensei — N2 Grammar</div>
+            <div class="link-desc">Full free grammar list with example sentences.</div>
+          </a>
+          <a class="link-card" href="https://bunpro.jp/grammar_points?levels%5B%5D=2" target="_blank" rel="noopener">
+            <div class="link-lvl">Practice</div>
+            <div class="link-title">Bunpro — N2 Grammar</div>
+            <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Grammar Points</h3>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜にもかかわらず</div>
+          <div class="grammar-example">雨にも かかわらず、試合は 行われた。</div>
+          <div class="grammar-en">Despite the rain, the match was held.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜からには</div>
+          <div class="grammar-example">日本で 働く からには、日本語を 頑張ります。</div>
+          <div class="grammar-en">Now that I'm working in Japan, I'll do my best with Japanese.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜つつある</div>
+          <div class="grammar-example">状況は 改善しつつ あります。</div>
+          <div class="grammar-en">The situation is (gradually) improving.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜をきっかけに</div>
+          <div class="grammar-example">病気を きっかけに、生活習慣を 見直した。</div>
+          <div class="grammar-en">Triggered by my illness, I reconsidered my lifestyle habits.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜あげく</div>
+          <div class="grammar-example">悩んだ あげく、仕事を 辞めることに した。</div>
+          <div class="grammar-en">After much agonizing, I decided to quit my job.</div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Vocabulary</h3>
+        <div class="vocab-grid" data-vocab="n2"></div>
+      </section>
+
+      <section class="block">
+        <h3>Practice Questions</h3>
+        <div class="qcard">
+          <div class="qnum">Question 1</div>
+          <div class="qtext">「反対 ＿、計画は 実行された。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. にもかかわらず</div><div class="choice">B. のもとで</div><div class="choice">C. に沿って</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (にもかかわらず)</div><div class="meaning">"The plan was carried out despite opposition."</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 2</div>
+          <div class="qtext">「約束した ＿、必ず 守るべきだ。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. からには</div><div class="choice">B. うえで</div><div class="choice">C. だけあって</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (からには)</div><div class="meaning">"Since you made a promise, you should definitely keep it."</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 3</div>
+          <div class="qtext">「経済は 回復し＿ ある。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. つつ</div><div class="choice">B. ながら</div><div class="choice">C. がち</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (つつ)</div><div class="meaning">"The economy is (gradually) recovering." — 〜つつある describes a change in progress.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 4</div>
+          <div class="qtext">「引っ越しを ＿、生活習慣が 変わった。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. きっかけに</div><div class="choice">B. もとに</div><div class="choice">C. かわりに</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (きっかけに)</div><div class="meaning">"Triggered by moving house, my lifestyle habits changed."</div></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- N1 -->
+    <section class="panel" id="panel-n1">
+      <div class="level-head">
+        <div>
+          <h2>N1</h2>
+          <p class="sub">Formal, literary expressions found in news and opinion pieces.</p>
+        </div>
+        <div class="stamp">Top<br>Level</div>
+      </div>
+
+      <section class="block">
+        <h3>Learn More (Free)</h3>
+        <div class="link-grid">
+          <a class="link-card" href="https://jlptsensei.com/jlpt-n1-grammar-list/" target="_blank" rel="noopener">
+            <div class="link-lvl">Grammar list</div>
+            <div class="link-title">JLPT Sensei — N1 Grammar</div>
+            <div class="link-desc">Full free grammar list with example sentences.</div>
+          </a>
+          <a class="link-card" href="https://bunpro.jp/grammar_points?levels%5B%5D=1" target="_blank" rel="noopener">
+            <div class="link-lvl">Practice</div>
+            <div class="link-title">Bunpro — N1 Grammar</div>
+            <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Grammar Points</h3>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜べからず</div>
+          <div class="grammar-example">初心 忘る べからず。</div>
+          <div class="grammar-en">Never forget your beginner's spirit. (formal prohibition/warning)</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜んがため</div>
+          <div class="grammar-example">生きんがため、必死で 働いた。</div>
+          <div class="grammar-en">He worked desperately in order to survive.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜きらいがある</div>
+          <div class="grammar-example">彼は 物事を 悲観的に 考える きらいが ある。</div>
+          <div class="grammar-en">He tends to think about things pessimistically. (mild criticism)</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜ならでは</div>
+          <div class="grammar-example">これは この店 ならでは の 味だ。</div>
+          <div class="grammar-en">This is a flavor unique to this shop.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">〜をものともせず</div>
+          <div class="grammar-example">困難を ものともせず、彼女は 挑戦を 続けた。</div>
+          <div class="grammar-en">Undaunted by the difficulties, she kept challenging herself.</div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Vocabulary</h3>
+        <div class="vocab-grid" data-vocab="n1"></div>
+      </section>
+
+      <section class="block">
+        <h3>Practice Questions</h3>
+        <div class="qcard">
+          <div class="qnum">Question 1</div>
+          <div class="qtext">「彼は 頭は いいが、努力を 怠る ＿ が ある。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. きらい</div><div class="choice">B. しまつ</div><div class="choice">C. ゆえ</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (きらい)</div><div class="meaning">"He's smart, but tends to neglect effort." — mild, indirect criticism.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 2</div>
+          <div class="qtext">「批判 ＿、彼は 自分の 信念を 貫いた。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. をものともせず</div><div class="choice">B. にひきかえ</div><div class="choice">C. をよそに</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (をものともせず)</div><div class="meaning">"Undaunted by criticism, he held firm to his convictions." (をよそに is close but implies ignoring/disregarding rather than overcoming.)</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 3</div>
+          <div class="qtext">「これは この 地方＿の 料理だ。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. ならでは</div><div class="choice">B. にひきかえ</div><div class="choice">C. にもまして</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (ならでは)</div><div class="meaning">"This is a dish unique to this region." — 〜ならでは highlights something only possible because of X.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 4</div>
+          <div class="qtext">「規則を 破る＿。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. べからず</div><div class="choice">B. までもない</div><div class="choice">C. ずくめ</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (べからず)</div><div class="meaning">"One must not break the rules." — a formal, classical-style prohibition, often seen on signs/notices.</div></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- JFT -->
+    <section class="panel" id="panel-jft">
+      <div class="level-head">
+        <div>
+          <h2>JFT-Basic</h2>
+          <p class="sub">The Japan Foundation Test for Basic Japanese — one of the requirements for the SSW visa. Focuses on everyday and workplace Japanese (roughly CEFR A2 level).</p>
+        </div>
+        <div class="stamp">Visa<br>Ready</div>
+      </div>
+
+      <div class="note">These are original practice samples I wrote, not real past exam questions — useful for getting a feel for the format and difficulty level, not for memorizing actual test content.</div>
+
+      <section class="block">
+        <h3>Learn More (Free, Official)</h3>
+        <div class="link-grid">
+          <a class="link-card" href="https://www.jpf.go.jp/jft-basic/sample/q01.html" target="_blank" rel="noopener">
+            <div class="link-lvl">Official</div>
+            <div class="link-title">JFT-Basic — Official Sample Questions</div>
+            <div class="link-desc">Real sample questions from the Japan Foundation, in the actual CBT format.</div>
+          </a>
+          <a class="link-card" href="https://www.jpf.go.jp/jft-basic/" target="_blank" rel="noopener">
+            <div class="link-lvl">Official</div>
+            <div class="link-title">JFT-Basic — Main Site</div>
+            <div class="link-desc">Test structure, schedule, and study tips from the Japan Foundation.</div>
+          </a>
+          <a class="link-card" href="https://www.irodori.jpf.go.jp/" target="_blank" rel="noopener">
+            <div class="link-lvl">Textbook</div>
+            <div class="link-title">Irodori — Japanese for Life in Japan</div>
+            <div class="link-desc">The free coursebook the JFT-Basic test content is closely aligned with.</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Exam Structure</h3>
+        <div class="grammar-item">
+          <div class="grammar-pattern">文字と語彙</div>
+          <div class="grammar-en">Characters &amp; vocabulary — basic kanji/vocab recognition for daily life and work.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">会話と表現</div>
+          <div class="grammar-en">Conversation &amp; expression — picking the natural response in everyday situations.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">聴解</div>
+          <div class="grammar-en">Listening — short workplace/daily-life audio clips with comprehension questions.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">読解</div>
+          <div class="grammar-en">Reading — short notices, schedules, simple work instructions.</div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Common Workplace Vocabulary</h3>
+        <div class="vocab-grid" data-vocab="jft"></div>
+      </section>
+
+      <section class="block">
+        <h3>Practice Questions</h3>
+        <div class="qcard">
+          <div class="qnum">Question 1 (Conversation &amp; Expression)</div>
+          <div class="qtext">上司：「今日は 早めに 帰っても いいですよ。」</div>
+          <div class="qinstruction">What is the most natural reply?</div>
+          <div class="choices"><div class="choice">A. すみません、頑張ります。</div><div class="choice">B. ありがとうございます。お先に 失礼します。</div><div class="choice">C. いいえ、いいです。</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: B</div><div class="meaning">"Thank you. I'll head out first, then." — the polite, natural response when told you may leave early.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 2 (Reading)</div>
+          <div class="qtext">貼り紙：「本日 12時から13時まで 休憩室 使用不可（清掃中）」</div>
+          <div class="qinstruction">What does this notice mean?</div>
+          <div class="choices"><div class="choice">A. 休憩室は一日中使えない</div><div class="choice">B. 12時〜13時は清掃のため休憩室が使えない</div><div class="choice">C. 休憩室が新しくなった</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: B</div><div class="meaning">"The break room cannot be used from 12:00–13:00 today due to cleaning."</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 3 (Vocabulary)</div>
+          <div class="qtext">「体調が 悪いので、明日 ＿ したいです。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. 有給</div><div class="choice">B. 残業</div><div class="choice">C. 出勤</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (有給)</div><div class="meaning">"I don't feel well, so I'd like to take paid leave tomorrow."</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 4 (Vocabulary)</div>
+          <div class="qtext">「今日は 残業が 多くて、とても ＿。」</div>
+          <div class="qinstruction">What word goes in the blank (＿)?</div>
+          <div class="choices"><div class="choice">A. 疲れました</div><div class="choice">B. 嬉しいです</div><div class="choice">C. 暇です</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (疲れました)</div><div class="meaning">"There was a lot of overtime today, so I'm very tired."</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 5 (Conversation &amp; Expression)</div>
+          <div class="qtext">同僚：「手伝いましょうか。」</div>
+          <div class="qinstruction">What is the most natural reply, accepting the offer?</div>
+          <div class="choices"><div class="choice">A. はい、お願いします。</div><div class="choice">B. いいえ、いいです、いいです。</div><div class="choice">C. さようなら。</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A</div><div class="meaning">"Yes, please (I'd appreciate that)." — the natural way to accept a colleague's offer to help.</div></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- KAIGO -->
+    <section class="panel" id="panel-kaigo">
+      <div class="level-head">
+        <div>
+          <h2>Kaigo SSW</h2>
+          <p class="sub">Specified Skilled Worker (Caregiving) — the Care Skills Evaluation Test and Care Japanese Evaluation Test. Covers professional vocabulary used on the job.</p>
+        </div>
+        <div class="stamp">Care<br>Field</div>
+      </div>
+
+      <div class="note">These are also original practice samples — not real exam questions — meant to build familiarity with common caregiving terms used on the job.</div>
+
+      <section class="block">
+        <h3>Learn More (Free, Official)</h3>
+        <div class="link-grid">
+          <a class="link-card" href="https://jicwels.or.jp/fcw/?page_id=15601" target="_blank" rel="noopener">
+            <div class="link-lvl">Official</div>
+            <div class="link-title">JICWELS — Kaigo Study Tools</div>
+            <div class="link-desc">Official study texts and sample questions for the Kaigo SSW exams, in multiple languages.</div>
+          </a>
+          <a class="link-card" href="https://www.mhlw.go.jp/stf/newpage_28131.html" target="_blank" rel="noopener">
+            <div class="link-lvl">Official</div>
+            <div class="link-title">MHLW — Kaigo Exam Study Text</div>
+            <div class="link-desc">Free study text from the Ministry of Health, Labour and Welfare, translated into several languages.</div>
+          </a>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Exam Structure</h3>
+        <div class="grammar-item">
+          <div class="grammar-pattern">介護技能評価試験</div>
+          <div class="grammar-en">Care skills evaluation test — knowledge of caregiving procedures, safety, and basic care techniques.</div>
+        </div>
+        <div class="grammar-item">
+          <div class="grammar-pattern">介護日本語評価試験</div>
+          <div class="grammar-en">Care Japanese evaluation test — Japanese vocabulary and communication specific to the care setting.</div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Caregiving Vocabulary</h3>
+        <div class="vocab-grid" data-vocab="kaigo"></div>
+      </section>
+
+      <section class="block">
+        <h3>Practice Questions</h3>
+        <div class="qcard">
+          <div class="qnum">Question 1</div>
+          <div class="qtext">ベッドから 車椅子へ 利用者を 移す 介助を 何と 言いますか。</div>
+          <div class="choices"><div class="choice">A. 移乗介助</div><div class="choice">B. 食事介助</div><div class="choice">C. 入浴介助</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (移乗介助)</div><div class="meaning">"Transfer assistance" — helping a care recipient move, e.g. from bed to wheelchair.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 2</div>
+          <div class="qtext">長時間 同じ 姿勢で 寝ていると できやすい 皮膚の 傷を 何と 言いますか。</div>
+          <div class="choices"><div class="choice">A. 褥瘡（じょくそう）</div><div class="choice">B. 骨折</div><div class="choice">C. やけど</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (褥瘡)</div><div class="meaning">"Bedsore / pressure ulcer" — skin damage from prolonged pressure in one position.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 3</div>
+          <div class="qtext">利用者の 体温・脈拍・血圧などを 測ることを 何と 言いますか。</div>
+          <div class="choices"><div class="choice">A. バイタルサインの測定</div><div class="choice">B. 排泄介助</div><div class="choice">C. 口腔ケア</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (バイタルサインの測定)</div><div class="meaning">"Measuring vital signs" — temperature, pulse, blood pressure, etc.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 4</div>
+          <div class="qtext">食べ物や 飲み物を 飲み込む力が 弱くなることを 何と 言いますか。</div>
+          <div class="choices"><div class="choice">A. 嚥下障害</div><div class="choice">B. 骨折</div><div class="choice">C. 認知症</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (嚥下障害／えんげしょうがい)</div><div class="meaning">"Dysphagia / swallowing difficulty" — a weakened ability to swallow food or liquid safely.</div></div>
+        </div>
+        <div class="qcard">
+          <div class="qnum">Question 5</div>
+          <div class="qtext">介護保険を 使って、利用者の 家に 行って ケアを することを 何と 言いますか。</div>
+          <div class="choices"><div class="choice">A. 訪問介護</div><div class="choice">B. 施設介護</div><div class="choice">C. 入院</div></div>
+          <button class="reveal-btn">Show answer</button>
+          <div class="answer"><div class="correct">Correct answer: A (訪問介護)</div><div class="meaning">"Home-visit care" — providing care at the recipient's own home, funded through long-term care insurance.</div></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- MATERIALS -->
+    <section class="panel" id="panel-materials">
+      <div class="level-head">
+        <div>
+          <h2>Free Materials</h2>
+          <p class="sub">Direct links to Irodori — Japanese for Life in Japan, the free official textbook published by the Japan Foundation.</p>
+        </div>
+        <div class="stamp">Free<br>Official</div>
+      </div>
+
+      <section class="block">
+        <h3>Irodori — Japanese for Life in Japan</h3>
+        <div class="link-grid">
+          <a class="link-card" href="https://www.irodori.jpf.go.jp/starter/pdf.html" target="_blank" rel="noopener">
+            <div class="link-lvl">A1 · Starter (入門)</div>
+            <div class="link-title">Irodori — Starter</div>
+            <div class="link-desc">Hiragana, katakana, and your very first steps. Free PDF and audio downloads.</div>
+            <div class="link-url">irodori.jpf.go.jp/starter →</div>
+          </a>
+          <a class="link-card" href="https://www.irodori.jpf.go.jp/elementary01/pdf.html" target="_blank" rel="noopener">
+            <div class="link-lvl">A2 · Elementary 1/2 (初級1／2)</div>
+            <div class="link-title">Irodori — Elementary 1 (continues to Elementary 2)</div>
+            <div class="link-desc">Everyday-life Japanese that also helps with JFT-Basic prep. Free PDF and audio downloads.</div>
+            <div class="link-url">irodori.jpf.go.jp/elementary01 →</div>
+          </a>
+        </div>
+        <div class="note" style="margin-top:20px;">An official answer key exists only for the Grammar Worksheets, not for the exercises inside the main textbook itself. For those, ask in the "Ask AI" tab, or share a photo here directly.</div>
+        <a class="link-card" href="https://www.irodori.jpf.go.jp/resources.html" target="_blank" rel="noopener" style="margin-top:4px;">
+          <div class="link-lvl">Answer key included</div>
+          <div class="link-title">Grammar Worksheets &amp; Answer Key (official resources page)</div>
+          <div class="link-desc">The Irodori official supplementary materials page. The grammar worksheets and their answer key PDFs are here.</div>
+          <div class="link-url">irodori.jpf.go.jp/resources →</div>
+        </a>
+      </section>
+    </section>
+
+    <!-- PROGRESS -->
+    <section class="panel" id="panel-progress">
+      <div class="level-head">
+        <div>
+          <h2>Your Progress</h2>
+          <p class="sub">How much vocabulary you've checked off as learned, per level. Saved privately in this browser only.</p>
+        </div>
+        <div class="stamp">Keep<br>Going</div>
+      </div>
+
+      <div class="progress-total">
+        <div>
+          <div style="font-size:0.85rem; color:var(--ink-soft); margin-bottom:2px;">Total learned</div>
+          <div class="big" id="progress-total-text">0 / 0</div>
+        </div>
+        <button class="progress-reset" id="progress-reset-btn" type="button">Reset all progress</button>
+      </div>
+
+      <section class="block">
+        <h3>By Level</h3>
+        <div id="progress-list"></div>
+      </section>
+    </section>
+
+    <!-- ASK AI -->
+    <section class="panel" id="panel-ask">
+      <div class="level-head">
+        <div>
+          <h2>Ask AI</h2>
+          <p class="sub">Ask about grammar, word meanings, example sentences — anything you're unsure about, in Japanese or English.</p>
+        </div>
+        <div class="stamp">Ask<br>Away</div>
+      </div>
+
+      <div id="ask-unavailable" class="note" style="display:none;">
+        This feature isn't available in this view right now — try reopening the page, or check back later.
+      </div>
+
+      <div id="ask-app" style="display:none;">
+        <div class="qcard">
+          <label for="ask-input" style="display:block; font-size:0.9rem; color:var(--ink-soft); margin-bottom:8px;">Type your question (Japanese or English)</label>
+          <textarea id="ask-input" rows="3" placeholder="e.g. What's the difference between 「〜ばかり」 and 「〜だけ」?" style="width:100%; font-family:inherit; font-size:0.98rem; padding:10px 12px; border-radius:6px; border:1px solid var(--line); background:var(--paper); color:var(--ink); resize:vertical;"></textarea>
+          <div style="display:flex; gap:10px; align-items:center; margin-top:10px;">
+            <button id="ask-btn" class="reveal-btn" type="button">Ask</button>
+            <button id="ask-stop" class="reveal-btn" type="button" style="background:var(--hanko); display:none;">Stop</button>
+            <span id="ask-status" style="font-size:0.85rem; color:var(--ink-soft);"></span>
+          </div>
+        </div>
+        <div id="ask-answer" class="qcard" style="display:none; white-space:pre-wrap; font-size:0.98rem;"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  var vocab = {
+    n5: [
+      ["学校","がっこう","school"], ["食べる","たべる","to eat"], ["飲む","のむ","to drink"],
+      ["大きい","おおきい","big"], ["小さい","ちいさい","small"], ["会社","かいしゃ","company"],
+      ["電話","でんわ","telephone"], ["今日","きょう","today"], ["明日","あした","tomorrow"],
+      ["友達","ともだち","friend"]
+    ],
+    n4: [
+      ["経験","けいけん","experience"], ["準備","じゅんび","preparation"], ["説明","せつめい","explanation"],
+      ["危険","きけん","dangerous"], ["便利","べんり","convenient"], ["習慣","しゅうかん","habit"],
+      ["予定","よてい","plan / schedule"], ["相談","そうだん","consultation"], ["訪問","ほうもん","visit"],
+      ["苦手","にがて","weak point / not good at"]
+    ],
+    n3: [
+      ["状況","じょうきょう","situation"], ["影響","えいきょう","influence"], ["判断","はんだん","judgment"],
+      ["対応","たいおう","response / dealing with"], ["確認","かくにん","confirmation"], ["向上","こうじょう","improvement"],
+      ["負担","ふたん","burden / load"], ["維持","いじ","maintenance"], ["割合","わりあい","proportion / rate"],
+      ["継続","けいぞく","continuation"]
+    ],
+    n2: [
+      ["傾向","けいこう","tendency"], ["見解","けんかい","viewpoint / opinion"], ["妥協","だきょう","compromise"],
+      ["促進","そくしん","promotion / facilitation"], ["把握","はあく","grasp / understanding"], ["矛盾","むじゅん","contradiction"],
+      ["徹底","てってい","thoroughness"], ["需要","じゅよう","demand"], ["抑制","よくせい","suppression / restraint"],
+      ["顕著","けんちょ","remarkable / marked"]
+    ],
+    n1: [
+      ["醸成","じょうせい","fostering / cultivating"], ["逸脱","いつだつ","deviation"], ["払拭","ふっしょく","dispelling / wiping away"],
+      ["遂行","すいこう","execution / carrying out"], ["是正","ぜせい","correction / rectification"], ["示唆","しさ","suggestion / implication"],
+      ["模索","もさく","groping for / searching for"], ["顕在化","けんざいか","becoming apparent"], ["懸念","けねん","concern / apprehension"],
+      ["整合性","せいごうせい","consistency / coherence"]
+    ],
+    jft: [
+      ["出勤","しゅっきん","going to work"], ["休憩","きゅうけい","break"], ["シフト","しふと","shift"],
+      ["給料","きゅうりょう","salary"], ["遅刻","ちこく","being late"], ["早退","そうたい","leaving early"],
+      ["有給","ゆうきゅう","paid leave"], ["履歴書","りれきしょ","resume / CV"], ["面接","めんせつ","interview"],
+      ["時給","じきゅう","hourly wage"]
+    ],
+    kaigo: [
+      ["利用者","りようしゃ","care recipient / service user"], ["排泄介助","はいせつかいじょ","toileting assistance"],
+      ["入浴介助","にゅうよくかいじょ","bathing assistance"], ["食事介助","しょくじかいじょ","meal assistance"],
+      ["移乗","いじょう","transferring (e.g. bed to wheelchair)"], ["褥瘡","じょくそう","bedsore / pressure ulcer"],
+      ["認知症","にんちしょう","dementia"], ["車椅子","くるまいす","wheelchair"],
+      ["介護記録","かいごきろく","care record"], ["バイタルサイン","ばいたるさいん","vital signs"]
+    ]
+  };
+
+  function safeGet(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } }
+  function safeSet(key, val){ try{ localStorage.setItem(key, val); }catch(e){} }
+  function safeRemove(key){ try{ localStorage.removeItem(key); }catch(e){} }
+
+  var levelLabels = { n5:'N5', n4:'N4', n3:'N3', n2:'N2', n1:'N1', jft:'JFT', kaigo:'Kaigo' };
+
+  function renderProgress(){
+    var listEl = document.getElementById('progress-list');
+    var totalTextEl = document.getElementById('progress-total-text');
+    if(!listEl || !totalTextEl) return;
+    listEl.innerHTML = '';
+    var grandLearned = 0, grandTotal = 0;
+    Object.keys(vocab).forEach(function(level){
+      var list = vocab[level];
+      var learned = 0;
+      list.forEach(function(item, idx){
+        if(safeGet('v-' + level + '-' + idx) === '1') learned++;
+      });
+      grandLearned += learned;
+      grandTotal += list.length;
+      var pct = list.length ? Math.round((learned / list.length) * 100) : 0;
+      var row = document.createElement('div');
+      row.className = 'progress-row';
+      row.innerHTML =
+        '<div class="progress-label">' + (levelLabels[level] || level) + '</div>' +
+        '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%;"></div></div>' +
+        '<div class="progress-count">' + learned + ' / ' + list.length + '</div>';
+      listEl.appendChild(row);
+    });
+    totalTextEl.textContent = grandLearned + ' / ' + grandTotal;
+  }
+
+  document.querySelectorAll('[data-vocab]').forEach(function(grid){
+    var level = grid.getAttribute('data-vocab');
+    var list = vocab[level] || [];
+    list.forEach(function(item, idx){
+      var id = 'v-' + level + '-' + idx;
+      var card = document.createElement('div');
+      card.className = 'vocab-card';
+      var checked = safeGet(id) === '1';
+      card.innerHTML =
+        '<label><input type="checkbox" ' + (checked ? 'checked' : '') + ' aria-label="learned"></label>' +
+        '<div style="flex:1;">' +
+          '<span class="jp">' + item[0] + '</span>' +
+          '<span class="reading">' + item[1] + '</span>' +
+        '</div>' +
+        '<div class="en">' + item[2] + '</div>';
+      var cb = card.querySelector('input');
+      cb.addEventListener('change', function(){
+        safeSet(id, cb.checked ? '1' : '0');
+        renderProgress();
+      });
+      grid.appendChild(card);
+    });
+  });
+
+  renderProgress();
+
+  var resetBtn = document.getElementById('progress-reset-btn');
+  if(resetBtn){
+    resetBtn.addEventListener('click', function(){
+      if(!window.confirm('Reset all learned-vocab progress? This cannot be undone.')) return;
+      Object.keys(vocab).forEach(function(level){
+        vocab[level].forEach(function(item, idx){ safeRemove('v-' + level + '-' + idx); });
+      });
+      document.querySelectorAll('.vocab-card input[type=checkbox]').forEach(function(cb){ cb.checked = false; });
+      renderProgress();
+    });
+  }
+
+  document.querySelectorAll('.tab').forEach(function(tab){
+    tab.addEventListener('click', function(){
+      document.querySelectorAll('.tab').forEach(function(t){ t.setAttribute('aria-selected','false'); });
+      document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+      tab.setAttribute('aria-selected','true');
+      document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+      window.scrollTo({top:0, behavior:'instant'});
+    });
+  });
+
+  document.querySelectorAll('.reveal-btn').forEach(function(btn){
+    if(btn.id === 'ask-btn' || btn.id === 'ask-stop') return;
+    btn.addEventListener('click', function(){
+      var ans = btn.parentElement.querySelector('.answer');
+      var showing = ans.classList.toggle('shown');
+      btn.textContent = showing ? 'Hide answer' : 'Show answer';
+    });
+  });
+
+  (async function initAsk(){
+    var unavailableEl = document.getElementById('ask-unavailable');
+    var appEl = document.getElementById('ask-app');
+    var input = document.getElementById('ask-input');
+    var askBtn = document.getElementById('ask-btn');
+    var stopBtn = document.getElementById('ask-stop');
+    var statusEl = document.getElementById('ask-status');
+    var answerEl = document.getElementById('ask-answer');
+
+    var sample = null;
+    try{
+      sample = (window.claude && typeof window.claude.use === 'function') ? await window.claude.use('sample') : null;
+    }catch(e){ sample = null; }
+
+    if(!sample){
+      unavailableEl.style.display = 'block';
+      appEl.style.display = 'none';
+      return;
+    }
+    unavailableEl.style.display = 'none';
+    appEl.style.display = 'block';
+
+    var ctl = null;
+
+    function setBusy(busy){
+      askBtn.disabled = busy;
+      stopBtn.style.display = busy ? 'inline-block' : 'none';
+    }
+
+    function errorCopy(code){
+      switch(code){
+        case 'not_granted': return 'This feature is not allowed for this session.';
+        case 'sampling_disabled': return 'This feature is not available for this account.';
+        case 'rate_limited': return 'Too many requests — please try again shortly.';
+        case 'refused': return "Couldn't answer that — try rephrasing your question.";
+        case 'cancelled': return '';
+        default: return 'Something went wrong — please try again.';
+      }
+    }
+
+    askBtn.addEventListener('click', async function(){
+      var q = input.value.trim();
+      if(!q) return;
+      ctl = new AbortController();
+      setBusy(true);
+      statusEl.textContent = 'Thinking...';
+      answerEl.style.display = 'block';
+      answerEl.textContent = '';
+
+      var prompt = "You are a friendly, encouraging Japanese-language study helper for a learner preparing for JLPT (N5 to N1), the JFT-Basic test, and the SSW Kaigo (caregiving) exam. " +
+        "Answer clearly and simply, in English, but keep any Japanese words, grammar patterns, and example sentences in Japanese. If the question is about grammar or vocabulary, give: 1) a short explanation, 2) one or two example sentences in Japanese with English translations, 3) a brief note on nuance or common mistakes if relevant. Keep the answer focused and not too long.\n\nQuestion: " + q;
+
+      try{
+        var result = await sample(prompt, {
+          signal: ctl.signal,
+          modelTier: 'default',
+          onText: function(evt){ statusEl.textContent = ''; answerEl.textContent = evt.text; }
+        });
+        if(result.truncated){
+          answerEl.textContent += '\n\n(Answer was cut short — try asking a more specific question.)';
+        }
+      }catch(e){
+        var msg = errorCopy(e && e.code);
+        if(e && e.text){ answerEl.textContent = e.text; }
+        if(msg){ statusEl.textContent = msg; }
+        else if(e && e.code === 'cancelled'){ statusEl.textContent = 'Stopped.'; }
+      }finally{
+        setBusy(false);
+        ctl = null;
+      }
+    });
+
+    stopBtn.addEventListener('click', function(){ if(ctl) ctl.abort(); });
+  })();
+})();
+</script>
 </body>
-
 </html>
