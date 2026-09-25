@@ -159,6 +159,31 @@
   .link-desc{ font-size:0.88rem; color:var(--ink-soft); margin-bottom:8px; }
   .link-url{ font-size:0.82rem; color:var(--pine); }
 
+  ruby{ ruby-align:center; }
+  rt{ font-size:0.6em; color:var(--ink-soft); font-weight:400; }
+
+  .reading-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:20px 22px;
+    margin-bottom:14px;
+  }
+  .reading-card .jp-text{
+    font-size:1.15rem;
+    line-height:2.3;
+    margin-bottom:14px;
+  }
+  .reading-translation{
+    display:none;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+    color:var(--ink-soft);
+    font-size:0.95rem;
+    font-style:italic;
+  }
+  .reading-translation.shown{ display:block; }
+
   .progress-row{
     display:grid;
     grid-template-columns:110px 1fr 70px;
@@ -295,6 +320,16 @@
             <div class="link-title">Bunpro — N5 Grammar</div>
             <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
           </a>
+          <a class="link-card" href="https://www.nihongo-pro.com/free-jlpt-n5-quizzes" target="_blank" rel="noopener">
+            <div class="link-lvl">Quiz</div>
+            <div class="link-title">Nihongo-Pro — N5 Quizzes</div>
+            <div class="link-desc">Short multiple-choice quizzes to test yourself.</div>
+          </a>
+          <a class="link-card" href="https://matcha-jp.com/easy" target="_blank" rel="noopener">
+            <div class="link-lvl">Reading</div>
+            <div class="link-title">MATCHA — Easy Japanese (やさしい日本語)</div>
+            <div class="link-desc">Short articles about Japan, every kanji has furigana.</div>
+          </a>
         </div>
       </section>
 
@@ -324,6 +359,15 @@
           <div class="grammar-pattern">〜ませんか</div>
           <div class="grammar-example">一緒に ジムへ 行きませんか。</div>
           <div class="grammar-en">Would you like to go to the gym together?</div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Reading Practice</h3>
+        <div class="reading-card">
+          <div class="jp-text">はじめまして。わたしは タンです。<ruby>学生<rt>がくせい</rt></ruby>です。<ruby>毎日<rt>まいにち</rt></ruby><ruby>日本語<rt>にほんご</rt></ruby>を<ruby>勉強<rt>べんきょう</rt></ruby>します。しゅうまつは ジムへ 行きます。にほんの ともだちと はなすのが すきです。</div>
+          <button class="reveal-btn">Show translation</button>
+          <div class="reading-translation">"Nice to meet you. I'm Tan. I'm a student. I study Japanese every day. On weekends, I go to the gym. I like talking with my Japanese friends."</div>
         </div>
       </section>
 
@@ -397,6 +441,16 @@
             <div class="link-title">Bunpro — N4 Grammar</div>
             <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
           </a>
+          <a class="link-card" href="https://www.nihongo-pro.com/free-jlpt-n4-quizzes" target="_blank" rel="noopener">
+            <div class="link-lvl">Quiz</div>
+            <div class="link-title">Nihongo-Pro — N4 Quizzes</div>
+            <div class="link-desc">Short multiple-choice quizzes to test yourself.</div>
+          </a>
+          <a class="link-card" href="https://www3.nhk.or.jp/news/easy/" target="_blank" rel="noopener">
+            <div class="link-lvl">Reading</div>
+            <div class="link-title">NHK News Web Easy</div>
+            <div class="link-desc">Real news, simplified, with furigana and audio for every article.</div>
+          </a>
         </div>
       </section>
 
@@ -426,6 +480,15 @@
           <div class="grammar-pattern">〜前に／〜後で</div>
           <div class="grammar-example">寝る前に 歯を 磨きます。</div>
           <div class="grammar-en">I brush my teeth before going to sleep.</div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Reading Practice</h3>
+        <div class="reading-card">
+          <div class="jp-text">わたしは まいあさ 7<ruby>時<rt>じ</rt></ruby>に <ruby>起<rt>お</rt></ruby>きます。<ruby>朝<rt>あさ</rt></ruby>ごはんを 食べてから、しごとに 行きます。しごとの 前に コーヒーを 飲みながら ニュースを 見ます。しごとが <ruby>終<rt>お</rt></ruby>わった あとで、ジムへ 行って、うんどうします。うんどうは たいへんですが、けんこうの ために がんばっています。</div>
+          <button class="reveal-btn">Show translation</button>
+          <div class="reading-translation">"I wake up at 7 every morning. After eating breakfast, I go to work. Before work, I drink coffee while watching the news. After work is over, I go to the gym and exercise. Exercise is tough, but I'm doing my best for my health."</div>
         </div>
       </section>
 
@@ -494,6 +557,16 @@
             <div class="link-title">Bunpro — N3 Grammar</div>
             <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
           </a>
+          <a class="link-card" href="https://www.nihongo-pro.com/free-jlpt-n3-quizzes" target="_blank" rel="noopener">
+            <div class="link-lvl">Quiz</div>
+            <div class="link-title">Nihongo-Pro — N3 Quizzes</div>
+            <div class="link-desc">Short multiple-choice quizzes to test yourself.</div>
+          </a>
+          <a class="link-card" href="https://www3.nhk.or.jp/news/easy/" target="_blank" rel="noopener">
+            <div class="link-lvl">Reading</div>
+            <div class="link-title">NHK News Web Easy</div>
+            <div class="link-desc">Real news, simplified, with furigana and audio for every article.</div>
+          </a>
         </div>
       </section>
 
@@ -523,6 +596,15 @@
           <div class="grammar-pattern">〜ばかり</div>
           <div class="grammar-example">日本に 来た ばかりです。</div>
           <div class="grammar-en">I have just come to Japan.</div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Reading Practice</h3>
+        <div class="reading-card">
+          <div class="jp-text">さいきん、<ruby>物価<rt>ぶっか</rt></ruby>が <ruby>上<rt>あ</rt></ruby>がっているので、せいかつが たいへんに なりました。しかし、きゅうりょうが <ruby>上<rt>あ</rt></ruby>がったわけでは ありません。だから、むだな しゅっぴを へらすように しています。<ruby>節約<rt>せつやく</rt></ruby>すれば するほど、しょうらいの ために おかねを ためられると おもいます。</div>
+          <button class="reveal-btn">Show translation</button>
+          <div class="reading-translation">"Recently, prices have been rising, so life has become difficult. However, it's not that my salary has increased. So I'm trying to reduce unnecessary spending. I think the more I save, the more money I can put aside for the future."</div>
         </div>
       </section>
 
@@ -591,6 +673,11 @@
             <div class="link-title">Bunpro — N2 Grammar</div>
             <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
           </a>
+          <a class="link-card" href="https://www.nihongo-pro.com/free-jlpt-n2-quizzes" target="_blank" rel="noopener">
+            <div class="link-lvl">Quiz</div>
+            <div class="link-title">Nihongo-Pro — N2 Quizzes</div>
+            <div class="link-desc">Short multiple-choice quizzes to test yourself.</div>
+          </a>
         </div>
       </section>
 
@@ -620,6 +707,15 @@
           <div class="grammar-pattern">〜あげく</div>
           <div class="grammar-example">悩んだ あげく、仕事を 辞めることに した。</div>
           <div class="grammar-en">After much agonizing, I decided to quit my job.</div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Reading Practice</h3>
+        <div class="reading-card">
+          <div class="jp-text"><ruby>近年<rt>きんねん</rt></ruby>、<ruby>働<rt>はたら</rt></ruby>き<ruby>方<rt>かた</rt></ruby>に <ruby>対<rt>たい</rt></ruby>する <ruby>意識<rt>いしき</rt></ruby>が <ruby>変<rt>か</rt></ruby>わりつつある。<ruby>景気<rt>けいき</rt></ruby>の <ruby>回復<rt>かいふく</rt></ruby>を きっかけに、<ruby>転職<rt>てんしょく</rt></ruby>を <ruby>考<rt>かんが</rt></ruby>える <ruby>人<rt>ひと</rt></ruby>も <ruby>増<rt>ふ</rt></ruby>えている。ただし、<ruby>安定<rt>あんてい</rt></ruby>した <ruby>収入<rt>しゅうにゅう</rt></ruby>を <ruby>手放<rt>てばな</rt></ruby>すことに <ruby>不安<rt>ふあん</rt></ruby>を <ruby>感<rt>かん</rt></ruby>じる 人も 少なくない。</div>
+          <button class="reveal-btn">Show translation</button>
+          <div class="reading-translation">"In recent years, attitudes toward work styles have been changing. Triggered by the economic recovery, more people are considering changing jobs. However, quite a few people feel anxious about giving up stable income."</div>
         </div>
       </section>
 
@@ -688,6 +784,16 @@
             <div class="link-title">Bunpro — N1 Grammar</div>
             <div class="link-desc">Grammar reference with example sentences and quizzes.</div>
           </a>
+          <a class="link-card" href="https://www.nihongo-pro.com/free-jlpt-n1-quizzes" target="_blank" rel="noopener">
+            <div class="link-lvl">Quiz</div>
+            <div class="link-title">Nihongo-Pro — N1 Quizzes</div>
+            <div class="link-desc">Short multiple-choice quizzes to test yourself.</div>
+          </a>
+          <a class="link-card" href="https://www.aozora.gr.jp/" target="_blank" rel="noopener">
+            <div class="link-lvl">Reading</div>
+            <div class="link-title">Aozora Bunko</div>
+            <div class="link-desc">Free digital library of classic Japanese literature, public domain.</div>
+          </a>
         </div>
       </section>
 
@@ -717,6 +823,15 @@
           <div class="grammar-pattern">〜をものともせず</div>
           <div class="grammar-example">困難を ものともせず、彼女は 挑戦を 続けた。</div>
           <div class="grammar-en">Undaunted by the difficulties, she kept challenging herself.</div>
+        </div>
+      </section>
+
+      <section class="block">
+        <h3>Reading Practice</h3>
+        <div class="reading-card">
+          <div class="jp-text"><ruby>時代<rt>じだい</rt></ruby>の <ruby>変化<rt>へんか</rt></ruby>を ものともせず、<ruby>伝統<rt>でんとう</rt></ruby>を <ruby>守<rt>まも</rt></ruby>り <ruby>続<rt>つづ</rt></ruby>ける <ruby>職人<rt>しょくにん</rt></ruby>たちが いる。<ruby>彼<rt>かれ</rt></ruby>らの <ruby>技術<rt>ぎじゅつ</rt></ruby>は、その <ruby>土地<rt>とち</rt></ruby>ならではの ものであり、<ruby>簡単<rt>かんたん</rt></ruby>に <ruby>真似<rt>まね</rt></ruby>する ことは できない。<ruby>効率<rt>こうりつ</rt></ruby>ばかりを <ruby>追<rt>お</rt></ruby>い <ruby>求<rt>もと</rt></ruby>める <ruby>現代社会<rt>げんだいしゃかい</rt></ruby>において、こうした <ruby>姿勢<rt>しせい</rt></ruby>は <ruby>示唆<rt>しさ</rt></ruby>に <ruby>富<rt>と</rt></ruby>む。</div>
+          <button class="reveal-btn">Show translation</button>
+          <div class="reading-translation">"There are artisans who continue to preserve tradition, undaunted by the changes of the times. Their skills are unique to their region and cannot be easily imitated. In a modern society that chases efficiency above all else, such an attitude is thought-provoking."</div>
         </div>
       </section>
 
@@ -816,6 +931,15 @@
       </section>
 
       <section class="block">
+        <h3>Reading Practice</h3>
+        <div class="reading-card">
+          <div class="jp-text">あした は <ruby>会社<rt>かいしゃ</rt></ruby>の <ruby>忘年会<rt>ぼうねんかい</rt></ruby>が あります。<ruby>時間<rt>じかん</rt></ruby>は 6<ruby>時<rt>じ</rt></ruby>からです。<ruby>場所<rt>ばしょ</rt></ruby>は <ruby>駅前<rt>えきまえ</rt></ruby>の レストランです。<ruby>参加<rt>さんか</rt></ruby>したい <ruby>人<rt>ひと</rt></ruby>は、きょう <ruby>中<rt>じゅう</rt></ruby>に <ruby>山田<rt>やまだ</rt></ruby>さんに つたえて ください。</div>
+          <button class="reveal-btn">Show translation</button>
+          <div class="reading-translation">"Tomorrow there is a company year-end party. It starts at 6 o'clock. The location is a restaurant near the station. If you want to attend, please tell Yamada-san by the end of today."</div>
+        </div>
+      </section>
+
+      <section class="block">
         <h3>Common Workplace Vocabulary</h3>
         <div class="vocab-grid" data-vocab="jft"></div>
       </section>
@@ -906,6 +1030,15 @@
       </section>
 
       <section class="block">
+        <h3>Reading Practice</h3>
+        <div class="reading-card">
+          <div class="jp-text"><ruby>午前<rt>ごぜん</rt></ruby>10<ruby>時<rt>じ</rt></ruby>に <ruby>利用者<rt>りようしゃ</rt></ruby>の <ruby>田中<rt>たなか</rt></ruby>さんの <ruby>検温<rt>けんおん</rt></ruby>を しました。<ruby>体温<rt>たいおん</rt></ruby>は 36.5<ruby>度<rt>ど</rt></ruby>で、いつもと <ruby>変<rt>か</rt></ruby>わり ありませんでした。<ruby>昼食<rt>ちゅうしょく</rt></ruby>は <ruby>全部<rt>ぜんぶ</rt></ruby> 食べられました。<ruby>午後<rt>ごご</rt></ruby>は お<ruby>部屋<rt>へや</rt></ruby>で ゆっくり <ruby>休<rt>やす</rt></ruby>んでいます。</div>
+          <button class="reveal-btn">Show translation</button>
+          <div class="reading-translation">"At 10 AM, I took Tanaka-san's (a care recipient) temperature. Their temperature was 36.5°C, no different from usual. They were able to eat all of their lunch. In the afternoon, they are resting quietly in their room."</div>
+        </div>
+      </section>
+
+      <section class="block">
         <h3>Caregiving Vocabulary</h3>
         <div class="vocab-grid" data-vocab="kaigo"></div>
       </section>
@@ -983,6 +1116,32 @@
           <div class="link-desc">The Irodori official supplementary materials page. The grammar worksheets and their answer key PDFs are here.</div>
           <div class="link-url">irodori.jpf.go.jp/resources →</div>
         </a>
+      </section>
+
+      <section class="block">
+        <h3>All-in-One Study Platforms</h3>
+        <div class="link-grid">
+          <a class="link-card" href="https://www.renshuu.org/" target="_blank" rel="noopener">
+            <div class="link-lvl">All levels</div>
+            <div class="link-title">Renshuu</div>
+            <div class="link-desc">Free vocab/kanji flashcard system (SRS) with built-in quizzes, organized by JLPT level.</div>
+          </a>
+          <a class="link-card" href="https://www.nihongo-pro.com/free-japanese-quizzes" target="_blank" rel="noopener">
+            <div class="link-lvl">All levels</div>
+            <div class="link-title">Nihongo-Pro — All Free Quizzes</div>
+            <div class="link-desc">New free Japanese quizzes daily, at every skill level.</div>
+          </a>
+          <a class="link-card" href="https://www3.nhk.or.jp/news/easy/" target="_blank" rel="noopener">
+            <div class="link-lvl">Reading</div>
+            <div class="link-title">NHK News Web Easy</div>
+            <div class="link-desc">Real news simplified for learners, with furigana and audio.</div>
+          </a>
+          <a class="link-card" href="https://matcha-jp.com/easy" target="_blank" rel="noopener">
+            <div class="link-lvl">Reading</div>
+            <div class="link-title">MATCHA — Easy Japanese</div>
+            <div class="link-desc">Articles about Japan written in beginner-friendly Japanese with full furigana.</div>
+          </a>
+        </div>
       </section>
     </section>
 
@@ -1171,10 +1330,16 @@
 
   document.querySelectorAll('.reveal-btn').forEach(function(btn){
     if(btn.id === 'ask-btn' || btn.id === 'ask-stop') return;
+    var target = btn.parentElement.querySelector('.answer') || btn.parentElement.querySelector('.reading-translation');
+    if(!target) return;
+    var isTranslation = target.classList.contains('reading-translation');
     btn.addEventListener('click', function(){
-      var ans = btn.parentElement.querySelector('.answer');
-      var showing = ans.classList.toggle('shown');
-      btn.textContent = showing ? 'Hide answer' : 'Show answer';
+      var showing = target.classList.toggle('shown');
+      if(isTranslation){
+        btn.textContent = showing ? 'Hide translation' : 'Show translation';
+      }else{
+        btn.textContent = showing ? 'Hide answer' : 'Show answer';
+      }
     });
   });
 
